@@ -1,0 +1,311 @@
+# =============================================================================
+# Figma-to-Code Pipeline Plan
+# Project: Cổng Đầu tư Quốc gia (Mobile)
+# Generated: 2026-04-20
+# =============================================================================
+
+project:
+  name: "Cổng Đầu tư Quốc gia"
+  platform: "react-web"
+  framework: "vite-react-tailwind"
+  path: "app/"
+  dev_command: "cd app && npm run dev"
+
+figma:
+  fileKey: "SwJYSyX7POiWiEj6MXx0Ak"
+  fileName: "Cổng đầu tư QG"
+  canvas: "Mobile - usersite"
+  canvasNodeId: "0:1"
+
+phase0:
+  status: "done"
+  variant: "C (smart-scan)"
+  mcp_calls: 8
+  mcp_breakdown:
+    get_metadata_root: 1
+    get_metadata_frames: 5
+    create_design_system_rules: 1
+    get_design_context: 1
+  timing:
+    step1_init: "<1s"
+    step2_get_metadata_root: "~40s (23:52:16 → 23:52:56)"
+    step2_parse_metadata: "~5s"
+    step2_get_metadata_5frames: "~90s (23:53:00 → 23:54:30, parallel)"
+    step2_frequency_analysis: "~2s"
+    step3_create_design_system_rules: "~10s"
+    step3_get_design_context: "~12s (23:55:01 → 23:55:23, parallel)"
+    step3_token_extraction: "~5s"
+    step3_component_generation: "~15s"
+    step4_routing: "~3s"
+    total_estimated: "~183s"
+  smart_scan_results:
+    frames_scanned:
+      - nodeId: "755:743"
+        name: "homepage"
+      - nodeId: "328:293"
+        name: "UC 2: List KCN"
+      - nodeId: "113:2"
+        name: "UC 45: Tất cả hồ sơ"
+      - nodeId: "39:4"
+        name: "UC 66: Tin tức"
+      - nodeId: "37:1484"
+        name: "UC 42: Thủ tục hành chính"
+    shared_components_found:
+      - name: "Header"
+        frequency: "5/5 frames"
+      - name: "BottomNavigation"
+        frequency: "2/5 frames"
+      - name: "Card+CardContent"
+        frequency: "3/5 frames"
+      - name: "NewsCard"
+        frequency: "2/5 frames"
+      - name: "Badge"
+        frequency: "2/5 frames"
+      - name: "Tab/TabList"
+        frequency: "2/5 frames"
+      - name: "Button"
+        frequency: "5/5 frames"
+      - name: "Input/Search"
+        frequency: "3/5 frames"
+    best_frame: "755:743 (homepage) — chứa nhiều shared components nhất"
+  design_tokens:
+    source: "reference_code (smart-scan → homepage 755:743)"
+    response_size: "54.9KB / 52791 chars"
+    files:
+      - "src/theme/colors.ts (16 colors)"
+      - "src/theme/typography.ts (3 weights, 6 sizes)"
+      - "src/theme/spacing.ts (6 spacings, 5 border-radii)"
+      - "src/theme/index.ts"
+  components_generated:
+    - name: "Header"
+      file: "src/components/shared/Header.tsx"
+    - name: "BottomNavigation"
+      file: "src/components/shared/BottomNavigation.tsx"
+    - name: "NewsCard"
+      file: "src/components/shared/NewsCard.tsx"
+    - name: "QuickAccessButton"
+      file: "src/components/shared/QuickAccessButton.tsx"
+    - name: "StatCard"
+      file: "src/components/shared/StatCard.tsx"
+    - name: "SuggestionItem"
+      file: "src/components/shared/SuggestionItem.tsx"
+  navigation:
+    file: "src/router.tsx"
+    type: "react-router"
+  layout:
+    file: "src/layouts/AppLayout.tsx"
+    type: "mobile-first-430px"
+
+# =============================================================================
+# Figma Section Mapping
+# Maps feature groups to their Figma section nodeIds
+# =============================================================================
+figma_sections:
+  - nodeId: "755:743"
+    name: "Homepage"
+    features: ["1.1"]
+  - nodeId: "1:443"
+    name: "KHAI THÁC THÔNG TIN KCN, KKT"
+    features: ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7"]
+  - nodeId: "8:2"
+    name: "UC 2-7: Khai thác thông tin KCN"
+    features: ["2.1", "2.2"]
+  - nodeId: "328:293"
+    name: "KCN List (reference)"
+    features: ["2.1"]
+  - nodeId: "921:2"
+    name: "UC 40-41: Kiểm tra KCN, KTT"
+    features: ["2.3", "2.4", "2.5", "2.6"]
+  - nodeId: "125:2002"
+    name: "CÁ NHÂN HOÁ HỖ TRỢ NĐT"
+    features: ["4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15", "4.16", "4.17", "4.18"]
+  - nodeId: "73:2"
+    name: "QUẢN LÝ XÚC TIẾN ĐẦU TƯ"
+    features: ["3.6"]
+  - nodeId: "113:640"
+    name: "UC 45-51: Quản lý hồ sơ"
+    features: ["3.1"]
+  - nodeId: "35:2"
+    name: "UC 42-44: Đặt lịch nộp thủ tục"
+    features: ["3.1"]
+  - nodeId: "89:3429"
+    name: "UC55-86: Khai thác thông tin đã công bố"
+    features: ["3.5"]
+  - nodeId: "39:283"
+    name: "UC56-57/66-68: Tin tức"
+    features: ["3.5.2", "3.5.3", "3.5.12", "3.5.13", "3.5.14"]
+  - nodeId: "341:2099"
+    name: "UC 71-75: Hướng dẫn sử dụng"
+    features: ["3.5.17", "3.5.18", "3.5.19", "3.5.20", "3.5.21"]
+  - nodeId: "341:2100"
+    name: "UC 76-82: Câu hỏi thường gặp"
+    features: ["3.5.22", "3.5.23", "3.5.24", "3.5.25", "3.5.26", "3.5.27", "3.5.28"]
+  - nodeId: "1089:1230"
+    name: "UC 60-61: Chatbot"
+    features: ["3.5.6", "3.5.7"]
+  - nodeId: "822:2"
+    name: "UC 69: Văn bản pháp luật"
+    features: ["3.5.15"]
+  - nodeId: "1477:2"
+    name: "UC 73: Thủ tục hành chính"
+    features: ["3.5.16"]
+  - nodeId: "41:2"
+    name: "UC 87-95: Xúc tiến đầu tư"
+    features: ["3.6"]
+  - nodeId: "89:2"
+    name: "UC 53/63-65: Phản ánh kiến nghị"
+    features: ["3.3", "3.5.9", "3.5.10", "3.5.11"]
+  - nodeId: "125:1656"
+    name: "QUẢN LÝ CHUNG"
+    features: ["5.1", "5.2"]
+  - nodeId: "110:12"
+    name: "UC 249-255: Quản lý tài khoản"
+    features: ["5.1"]
+  - nodeId: "163:2516"
+    name: "UC 256: Đăng nhập"
+    features: ["5.2.1"]
+  - nodeId: "163:2517"
+    name: "UC 252: Đăng ký"
+    features: ["5.1.4"]
+  - nodeId: "163:2518"
+    name: "UC 253: Quên mật khẩu"
+    features: ["5.1.5"]
+  - nodeId: "125:1657"
+    name: "UC 256-260: Quản lý thông tin chung"
+    features: ["5.2"]
+  - nodeId: "521:2203"
+    name: "UC 180-181: Thông báo"
+    features: ["5.2.3", "5.2.4"]
+  - nodeId: "523:5096"
+    name: "Common"
+    features: []
+
+# =============================================================================
+# Modules & Features — Pipeline tracking
+# Status: pending | scanning | scanned | generating | done | error
+# =============================================================================
+modules:
+  - id: "1"
+    name: "Trang chủ"
+    features:
+      - id: "1.1"
+        name: "Đường dẫn nhanh (Homepage)"
+        figma_section: "755:743"
+        status: "pending"
+        functions: []
+
+  - id: "2"
+    name: "Khai thác thông tin KCN, KKT"
+    features:
+      - id: "2.1"
+        name: "Khai thác thông tin khu công nghiệp"
+        figma_section: "8:2"
+        status: "pending"
+        functions: []
+      - id: "2.2"
+        name: "Khai thác thông tin khu kinh tế"
+        figma_section: "8:2"
+        status: "pending"
+        functions: []
+      - id: "2.3"
+        name: "Khai thác thông tin mô hình khu khác"
+        figma_section: "921:2"
+        status: "pending"
+        functions: []
+      - id: "2.4"
+        name: "Khai thác thông tin KCN sinh thái"
+        figma_section: "921:2"
+        status: "pending"
+        functions: []
+      - id: "2.5"
+        name: "Khai thác thông tin khu phi thuế quan"
+        figma_section: "921:2"
+        status: "pending"
+        functions: []
+      - id: "2.6"
+        name: "Khai thác thông tin khu thương mại tự do"
+        figma_section: "921:2"
+        status: "pending"
+        functions: []
+      - id: "2.7"
+        name: "Khai thác thông tin dự án đầu tư KCN, KKT"
+        figma_section: "1:443"
+        status: "pending"
+        functions: []
+
+  - id: "3"
+    name: "Quản lý xúc tiến đầu tư"
+    features:
+      - id: "3.1"
+        name: "Quản lý đặt lịch nộp thủ tục"
+        figma_section: "35:2"
+        status: "pending"
+        functions: []
+      - id: "3.2"
+        name: "Tra cứu kho dữ liệu điện tử"
+        figma_section: "113:640"
+        status: "pending"
+        functions: []
+      - id: "3.3"
+        name: "Tra cứu phản ánh kiến nghị"
+        figma_section: "89:2"
+        status: "pending"
+        functions: []
+      - id: "3.4"
+        name: "Tra cứu báo cáo nhà đầu tư đã nộp"
+        figma_section: "113:640"
+        status: "pending"
+        functions: []
+      - id: "3.5"
+        name: "Khai thác thông tin đã công bố"
+        figma_section: "89:3429"
+        status: "pending"
+        functions: []
+      - id: "3.6"
+        name: "Khai thác thông tin xúc tiến đầu tư"
+        figma_section: "41:2"
+        status: "pending"
+        functions: []
+
+  - id: "4"
+    name: "Cá nhân hoá hỗ trợ nhà đầu tư"
+    features:
+      - id: "4.1-4.14"
+        name: "Chatbot hỗ trợ pháp lý đầu tư"
+        figma_section: "1089:1230"
+        status: "pending"
+        functions: []
+      - id: "4.15"
+        name: "Đa ngôn ngữ"
+        figma_section: "125:2002"
+        status: "pending"
+        functions: []
+      - id: "4.16"
+        name: "Đánh giá câu trả lời AI"
+        figma_section: "1089:1230"
+        status: "pending"
+        functions: []
+      - id: "4.17"
+        name: "Nhắc hạn trên mobile"
+        figma_section: "521:2203"
+        status: "pending"
+        functions: []
+      - id: "4.18"
+        name: "Dashboard theo tài khoản"
+        figma_section: "125:2002"
+        status: "pending"
+        functions: []
+
+  - id: "5"
+    name: "Quản lý chung"
+    features:
+      - id: "5.1"
+        name: "Quản lý tài khoản nhà đầu tư"
+        figma_section: "110:12"
+        status: "pending"
+        functions: []
+      - id: "5.2"
+        name: "Quản lý thông tin chung (Đăng nhập/Đăng ký)"
+        figma_section: "163:2516"
+        status: "pending"
+        functions: []
