@@ -1,311 +1,1974 @@
 # =============================================================================
 # Figma-to-Code Pipeline Plan
-# Project: Cổng Đầu tư Quốc gia (Mobile)
-# Generated: 2026-04-20
+# Project: Cổng Đầu tư Quốc gia - Báo cáo (Web)
 # =============================================================================
 
 project:
-  name: "Cổng Đầu tư Quốc gia"
+  name: "Cổng Đầu tư Quốc gia - Báo cáo"
   platform: "react-web"
   framework: "vite-react-tailwind"
   path: "app/"
   dev_command: "cd app && npm run dev"
 
 figma:
-  fileKey: "SwJYSyX7POiWiEj6MXx0Ak"
-  fileName: "Cổng đầu tư QG"
-  canvas: "Mobile - usersite"
-  canvasNodeId: "0:1"
+  fileKey: "cklcaM2w5S8To691104P3j"
+  fileName: "Cổng đầu tư QG - Báo cáo"
+  canvas: "Page 2"
+  canvasNodeId: "287:2"
 
 phase0:
   status: "done"
   variant: "C (smart-scan)"
-  mcp_calls: 8
+  mcp_calls: 3
   mcp_breakdown:
     get_metadata_root: 1
-    get_metadata_frames: 5
-    create_design_system_rules: 1
     get_design_context: 1
-  timing:
-    step1_init: "<1s"
-    step2_get_metadata_root: "~40s (23:52:16 → 23:52:56)"
-    step2_parse_metadata: "~5s"
-    step2_get_metadata_5frames: "~90s (23:53:00 → 23:54:30, parallel)"
-    step2_frequency_analysis: "~2s"
-    step3_create_design_system_rules: "~10s"
-    step3_get_design_context: "~12s (23:55:01 → 23:55:23, parallel)"
-    step3_token_extraction: "~5s"
-    step3_component_generation: "~15s"
-    step4_routing: "~3s"
-    total_estimated: "~183s"
+    create_design_system_rules: 0   # skipped (offline token extraction)
+    extras: 1                       # initial failed call to resolve fileKey
   smart_scan_results:
     frames_scanned:
-      - nodeId: "755:743"
-        name: "homepage"
-      - nodeId: "328:293"
-        name: "UC 2: List KCN"
-      - nodeId: "113:2"
-        name: "UC 45: Tất cả hồ sơ"
-      - nodeId: "39:4"
-        name: "UC 66: Tin tức"
-      - nodeId: "37:1484"
-        name: "UC 42: Thủ tục hành chính"
+      - nodeId: "287:3"
+        name: "Dashboard"
+      - nodeId: "317:1943"
+        name: "Mẫu báo cáo có kỳ hạn - Lập báo cáo"
+      - nodeId: "1356:2527"
+        name: "Mẫu báo cáo có kỳ hạn - Xem báo cáo"
+      - nodeId: "730:639"
+        name: "Danh sách báo cáo đã gửi"
+      - nodeId: "754:1677"
+        name: "Danh sách báo cáo NDT đã nộp"
+      - nodeId: "2347:1074"
+        name: "Xem chi tiết báo cáo NDT"
+      - nodeId: "1933:1088"
+        name: "Báo cáo I.17"
     shared_components_found:
-      - name: "Header"
-        frequency: "5/5 frames"
-      - name: "BottomNavigation"
-        frequency: "2/5 frames"
-      - name: "Card+CardContent"
-        frequency: "3/5 frames"
-      - name: "NewsCard"
-        frequency: "2/5 frames"
-      - name: "Badge"
-        frequency: "2/5 frames"
-      - name: "Tab/TabList"
-        frequency: "2/5 frames"
-      - name: "Button"
-        frequency: "5/5 frames"
-      - name: "Input/Search"
-        frequency: "3/5 frames"
-    best_frame: "755:743 (homepage) — chứa nhiều shared components nhất"
+      - { name: "Sidebar",          frequency: "7/7" }
+      - { name: "Container",        frequency: "7/7" }
+      - { name: "Icon",             frequency: "7/7" }
+      - { name: "Button",           frequency: "7/7" }
+      - { name: "Heading 1",        frequency: "7/7" }
+      - { name: "Text",             frequency: "7/7" }
+      - { name: "DashboardLayout",  frequency: "6/7" }
+      - { name: "Label",            frequency: "6/7" }
+      - { name: "Paragraph",        frequency: "6/7" }
+      - { name: "Table",            frequency: "6/7" }
+      - { name: "Card",             frequency: "5/7" }
+      - { name: "Input",            frequency: "5/7" }
+      - { name: "Table Row/Cell",   frequency: "5/7" }
+      - { name: "Checkbox",         frequency: "3/7" }
+      - { name: "Textarea",         frequency: "3/7" }
+      - { name: "Tab Panel",        frequency: "3/7" }
+    best_frame: "287:3 (Dashboard) — chứa sidebar + cards + tables + buttons + inputs"
+
   design_tokens:
-    source: "reference_code (smart-scan → homepage 755:743)"
-    response_size: "54.9KB / 52791 chars"
+    source: "reference_code (get_design_context on 287:3)"
     files:
-      - "src/theme/colors.ts (16 colors)"
-      - "src/theme/typography.ts (3 weights, 6 sizes)"
-      - "src/theme/spacing.ts (6 spacings, 5 border-radii)"
+      - "src/theme/colors.ts (brand + neutral + 4 semantic tones)"
+      - "src/theme/typography.ts (6 sizes, 7 line-heights, 4 weights)"
+      - "src/theme/spacing.ts (spacing scale + radius + layout tokens)"
       - "src/theme/index.ts"
+      - "src/index.css (Tailwind v4 @theme CSS variables)"
+
   components_generated:
-    - name: "Header"
-      file: "src/components/shared/Header.tsx"
-    - name: "BottomNavigation"
-      file: "src/components/shared/BottomNavigation.tsx"
-    - name: "NewsCard"
-      file: "src/components/shared/NewsCard.tsx"
-    - name: "QuickAccessButton"
-      file: "src/components/shared/QuickAccessButton.tsx"
-    - name: "StatCard"
-      file: "src/components/shared/StatCard.tsx"
-    - name: "SuggestionItem"
-      file: "src/components/shared/SuggestionItem.tsx"
-  navigation:
-    file: "src/router.tsx"
-    type: "react-router"
+    - { name: "Button",    variants: "primary/secondary/outline/ghost/danger, sm/md/lg" }
+    - { name: "Input",     variants: "with leftIcon/rightIcon/invalid" }
+    - { name: "Textarea",  variants: "invalid" }
+    - { name: "Label",     variants: "required" }
+    - { name: "Checkbox",  variants: "with label" }
+    - { name: "Card",      subparts: "Card/CardHeader/CardTitle" }
+    - { name: "Container" }
+    - { name: "Heading",   variants: "1-4 + Paragraph" }
+    - { name: "Table",     subparts: "Table/THead/TBody/TR/TH/TD" }
+    - { name: "Badge",     tones: "neutral/success/info/warning/danger" }
+    - { name: "Sidebar",   note: "NavLink based, 320px fixed width" }
+    - { name: "Header",    note: "64px top bar" }
+
   layout:
-    file: "src/layouts/AppLayout.tsx"
-    type: "mobile-first-430px"
+    type: "desktop app shell"
+    sidebar_width: 320
+    header_height: 64
+    max_width: 1440
 
-# =============================================================================
-# Figma Section Mapping
-# Maps feature groups to their Figma section nodeIds
-# =============================================================================
-figma_sections:
-  - nodeId: "755:743"
-    name: "Homepage"
-    features: ["1.1"]
-  - nodeId: "1:443"
-    name: "KHAI THÁC THÔNG TIN KCN, KKT"
-    features: ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7"]
-  - nodeId: "8:2"
-    name: "UC 2-7: Khai thác thông tin KCN"
-    features: ["2.1", "2.2"]
-  - nodeId: "328:293"
-    name: "KCN List (reference)"
-    features: ["2.1"]
-  - nodeId: "921:2"
-    name: "UC 40-41: Kiểm tra KCN, KTT"
-    features: ["2.3", "2.4", "2.5", "2.6"]
-  - nodeId: "125:2002"
-    name: "CÁ NHÂN HOÁ HỖ TRỢ NĐT"
-    features: ["4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15", "4.16", "4.17", "4.18"]
-  - nodeId: "73:2"
-    name: "QUẢN LÝ XÚC TIẾN ĐẦU TƯ"
-    features: ["3.6"]
-  - nodeId: "113:640"
-    name: "UC 45-51: Quản lý hồ sơ"
-    features: ["3.1"]
-  - nodeId: "35:2"
-    name: "UC 42-44: Đặt lịch nộp thủ tục"
-    features: ["3.1"]
-  - nodeId: "89:3429"
-    name: "UC55-86: Khai thác thông tin đã công bố"
-    features: ["3.5"]
-  - nodeId: "39:283"
-    name: "UC56-57/66-68: Tin tức"
-    features: ["3.5.2", "3.5.3", "3.5.12", "3.5.13", "3.5.14"]
-  - nodeId: "341:2099"
-    name: "UC 71-75: Hướng dẫn sử dụng"
-    features: ["3.5.17", "3.5.18", "3.5.19", "3.5.20", "3.5.21"]
-  - nodeId: "341:2100"
-    name: "UC 76-82: Câu hỏi thường gặp"
-    features: ["3.5.22", "3.5.23", "3.5.24", "3.5.25", "3.5.26", "3.5.27", "3.5.28"]
-  - nodeId: "1089:1230"
-    name: "UC 60-61: Chatbot"
-    features: ["3.5.6", "3.5.7"]
-  - nodeId: "822:2"
-    name: "UC 69: Văn bản pháp luật"
-    features: ["3.5.15"]
-  - nodeId: "1477:2"
-    name: "UC 73: Thủ tục hành chính"
-    features: ["3.5.16"]
-  - nodeId: "41:2"
-    name: "UC 87-95: Xúc tiến đầu tư"
-    features: ["3.6"]
-  - nodeId: "89:2"
-    name: "UC 53/63-65: Phản ánh kiến nghị"
-    features: ["3.3", "3.5.9", "3.5.10", "3.5.11"]
-  - nodeId: "125:1656"
-    name: "QUẢN LÝ CHUNG"
-    features: ["5.1", "5.2"]
-  - nodeId: "110:12"
-    name: "UC 249-255: Quản lý tài khoản"
-    features: ["5.1"]
-  - nodeId: "163:2516"
-    name: "UC 256: Đăng nhập"
-    features: ["5.2.1"]
-  - nodeId: "163:2517"
-    name: "UC 252: Đăng ký"
-    features: ["5.1.4"]
-  - nodeId: "163:2518"
-    name: "UC 253: Quên mật khẩu"
-    features: ["5.1.5"]
-  - nodeId: "125:1657"
-    name: "UC 256-260: Quản lý thông tin chung"
-    features: ["5.2"]
-  - nodeId: "521:2203"
-    name: "UC 180-181: Thông báo"
-    features: ["5.2.3", "5.2.4"]
-  - nodeId: "523:5096"
-    name: "Common"
-    features: []
+  routing:
+    router_file: "src/router.tsx"
+    layout_file: "src/layouts/AppLayout.tsx"
+    base_routes:
+      - { path: "/", component: "Dashboard placeholder" }
 
-# =============================================================================
-# Modules & Features — Pipeline tracking
-# Status: pending | scanning | scanned | generating | done | error
-# =============================================================================
-modules:
-  - id: "1"
-    name: "Trang chủ"
-    features:
-      - id: "1.1"
-        name: "Đường dẫn nhanh (Homepage)"
-        figma_section: "755:743"
-        status: "pending"
-        functions: []
+  verification:
+    typescript: "npx tsc --noEmit → 0 errors"
 
-  - id: "2"
-    name: "Khai thác thông tin KCN, KKT"
-    features:
-      - id: "2.1"
-        name: "Khai thác thông tin khu công nghiệp"
-        figma_section: "8:2"
-        status: "pending"
-        functions: []
-      - id: "2.2"
-        name: "Khai thác thông tin khu kinh tế"
-        figma_section: "8:2"
-        status: "pending"
-        functions: []
-      - id: "2.3"
-        name: "Khai thác thông tin mô hình khu khác"
-        figma_section: "921:2"
-        status: "pending"
-        functions: []
-      - id: "2.4"
-        name: "Khai thác thông tin KCN sinh thái"
-        figma_section: "921:2"
-        status: "pending"
-        functions: []
-      - id: "2.5"
-        name: "Khai thác thông tin khu phi thuế quan"
-        figma_section: "921:2"
-        status: "pending"
-        functions: []
-      - id: "2.6"
-        name: "Khai thác thông tin khu thương mại tự do"
-        figma_section: "921:2"
-        status: "pending"
-        functions: []
-      - id: "2.7"
-        name: "Khai thác thông tin dự án đầu tư KCN, KKT"
-        figma_section: "1:443"
-        status: "pending"
-        functions: []
+features:
+  "3":
+    name: "BC kết quả thực hiện chương trình xúc tiến ĐT của Bộ/UBND cấp tỉnh"
+    spec_source: figma
+    figma_section: "2207:856"
+    figma_section_name: "UC 011-034: Quản lý bộ hồ sơ XTDT"
+    figma_shared_nodes:
+      - "2207:1829"   # ReportFormBIV2 — table component cho form B.IV.2 (header + body row)
+      - "2207:2358"   # Mẫu báo cáo có kỳ hạn + Nộp theo bộ hồ sơ — list view chung cho module
+    status: done
+    functions:
+      "11":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTForm.tsx"
+        tall_screen: false
+        screen_height: 1215
+        figma_nodes:
+          - "2207:1613"   # Form view: LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ — THÔNG TIN ĐỊNH DANH + Tab 1-4 + action buttons (Hủy / Xem / Lưu nháp)
+          - "2207:1742"   # Container action buttons cuối form: Hủy / Xem / Lưu nháp
+        figma_sub_nodes:
+          - nodeId: "2207:1614"
+            name: "DashboardLayout"
+            height: 1165
+          - nodeId: "2207:1664"
+            name: "PromotionReportForm (Main Content)"
+            height: 1209
+          - nodeId: "2207:1665"
+            name: "Container (Page header: LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 117
+          - nodeId: "2207:1679"
+            name: "Container (Tab List: Tab 1-4)"
+            height: 54
+          - nodeId: "2207:1691"
+            name: "Container (Form body: THÔNG TIN ĐỊNH DANH + fields)"
+            height: 1677
+          - nodeId: "2207:1699"
+            name: "Card (THÔNG TIN ĐỊNH DANH)"
+            height: 188
+          - nodeId: "2207:1728"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu B.IV.2: Báo cáo kết quả thực hiện chương trình xúc tiến đầu tư"
+            - "Của Bộ/ Ủy ban nhân dân cấp tỉnh"
+            - "THÔNG TIN ĐỊNH DANH"
+          field_labels:
+            - "Số công văn"
+            - "Năm báo cáo"
+          column_headers: []
+          button_text:
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+          status_labels: []
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+            - "Số: ............"
+            - "Chọn năm"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Báo cáo đã gửi"
+            - "Danh sách báo cáo"
+            - "1. Báo cáo định kỳ 6 tháng tình hình hoạt động dự án đầu tư tại nước ngoài"
+            - "2. Báo cáo kết quả thực hiện chương trình xúc tiến đầu tư của Bộ/ Ủy ban nhân dân cấp tỉnh"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
 
-  - id: "3"
-    name: "Quản lý xúc tiến đầu tư"
-    features:
-      - id: "3.1"
-        name: "Quản lý đặt lịch nộp thủ tục"
-        figma_section: "35:2"
-        status: "pending"
-        functions: []
-      - id: "3.2"
-        name: "Tra cứu kho dữ liệu điện tử"
-        figma_section: "113:640"
-        status: "pending"
-        functions: []
-      - id: "3.3"
-        name: "Tra cứu phản ánh kiến nghị"
-        figma_section: "89:2"
-        status: "pending"
-        functions: []
-      - id: "3.4"
-        name: "Tra cứu báo cáo nhà đầu tư đã nộp"
-        figma_section: "113:640"
-        status: "pending"
-        functions: []
-      - id: "3.5"
-        name: "Khai thác thông tin đã công bố"
-        figma_section: "89:3429"
-        status: "pending"
-        functions: []
-      - id: "3.6"
-        name: "Khai thác thông tin xúc tiến đầu tư"
-        figma_section: "41:2"
-        status: "pending"
-        functions: []
+      "12":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ — bảng danh sách theo năm (2022-2026) + bộ lọc + pagination
+        figma_sub_nodes:
+          - nodeId: "2207:2362"
+            name: "YearlyPromotionReport (Main Content)"
+            height: 1234
+          - nodeId: "2207:2363"
+            name: "Container (Page header: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 32
+          - nodeId: "2207:2365"
+            name: "Card (Bộ lọc: search + Năm + Trạng thái kỳ + Trạng thái hồ sơ)"
+            height: 36
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách báo cáo theo năm)"
+            height: 1019
+          - nodeId: "2207:2418"
+            name: "Table (danh sách năm 2022-2026)"
+            height: 919
+          - nodeId: "2207:2394"
+            name: "YearlyPromotionReport (Pagination bar)"
+            height: 73
+        content_map:
+          section_titles:
+            - "QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+          field_labels:
+            - "Tìm kiếm theo mã báo cáo"
+          column_headers:
+            - "Năm báo cáo"
+            - "Mã bộ hồ sơ"
+            - "Số báo cáo đang xử lý"
+            - "Trạng thái hồ sơ"
+            - "Ngày cập nhật/nộp"
+            - "Hành động"
+          button_text:
+            - "Năm"
+            - "Trạng thái kỳ"
+            - "Trạng thái hồ sơ"
+            - "Lập báo cáo"
+            - "Import"
+            - "Previous"
+            - "Next"
+            - "Chỉnh sửa"
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+            - "Xóa"
+            - "Nộp"
+          status_labels:
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+          other_text:
+            - "NĂM 2026"
+            - "NĂM 2025"
+            - "NĂM 2024"
+            - "NĂM 2023"
+            - "NĂM 2022"
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+            - "2/3"
+            - "3/3"
+            - "15/04/2026 14:30"
+            - "28/12/2025 16:45"
+            - "15/12/2024 11:20"
+            - "Hiển thị"
+            - "/ trang"
+            - "10"
+            - "Kỳ báo cáo này chưa tới hạn"
+            - "Vui lòng đợi đến thời hạn để lập báo cáo"
+            - "Chưa có bộ hồ sơ nào cho năm này"
+            - "Nhấn \"Lập bộ báo cáo\" ở trên để tạo bộ hồ sơ mới"
 
-  - id: "4"
-    name: "Cá nhân hoá hỗ trợ nhà đầu tư"
-    features:
-      - id: "4.1-4.14"
-        name: "Chatbot hỗ trợ pháp lý đầu tư"
-        figma_section: "1089:1230"
-        status: "pending"
-        functions: []
-      - id: "4.15"
-        name: "Đa ngôn ngữ"
-        figma_section: "125:2002"
-        status: "pending"
-        functions: []
-      - id: "4.16"
-        name: "Đánh giá câu trả lời AI"
-        figma_section: "1089:1230"
-        status: "pending"
-        functions: []
-      - id: "4.17"
-        name: "Nhắc hạn trên mobile"
-        figma_section: "521:2203"
-        status: "pending"
-        functions: []
-      - id: "4.18"
-        name: "Dashboard theo tài khoản"
-        figma_section: "125:2002"
-        status: "pending"
-        functions: []
+      "13":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTForm.tsx"
+        tall_screen: false
+        screen_height: 1215
+        figma_nodes:
+          - "2207:1613"   # Form view tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2207:2358"   # Nút Chỉnh sửa trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        figma_sub_nodes:
+          - nodeId: "2207:1699"
+            name: "Card (THÔNG TIN ĐỊNH DANH — form fields)"
+            height: 188
+          - nodeId: "2207:1742"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "THÔNG TIN ĐỊNH DANH"
+          field_labels:
+            - "Số công văn"
+            - "Năm báo cáo"
+          column_headers: []
+          button_text:
+            - "Chỉnh sửa"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
 
-  - id: "5"
-    name: "Quản lý chung"
-    features:
-      - id: "5.1"
-        name: "Quản lý tài khoản nhà đầu tư"
-        figma_section: "110:12"
-        status: "pending"
-        functions: []
-      - id: "5.2"
-        name: "Quản lý thông tin chung (Đăng nhập/Đăng ký)"
-        figma_section: "163:2516"
-        status: "pending"
-        functions: []
+      "14":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — nút Xem chi tiết và Xem vòng đời cho các hàng đã nộp trong bảng
+        figma_sub_nodes:
+          - nodeId: "2207:2638"
+            name: "YearlyPromotionReport (Action buttons row — Đã nộp: Xem chi tiết / Xem vòng đời / In bộ hồ sơ / Export)"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+          status_labels:
+            - "Đã nộp"
+            - "3/3"
+          other_text:
+            - "HSXT-2023-001"
+            - "15/12/2024 11:20"
+
+      "15":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — badge trạng thái hồ sơ (Lưu nháp / Yêu cầu chỉnh sửa / Đã nộp) + action Nộp / Chỉnh sửa visible theo trạng thái
+        figma_sub_nodes:
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách — nơi hiển thị badge trạng thái hồ sơ và actions phê duyệt)"
+            height: 1019
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Nộp"
+            - "Phê duyệt"
+            - "Từ chối"
+            - "Yêu cầu chỉnh sửa"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+          other_text:
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+
+      "16":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature3/ReportXTDTForm.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — nút In bộ hồ sơ trong action bar của từng hàng
+          - "2207:1613"   # Form view — nút In nằm trong action bar (cùng vùng Hủy/Xem/Lưu nháp)
+        figma_sub_nodes:
+          - nodeId: "2207:2583"
+            name: "Button - In bộ hồ sơ (trong list view, hàng Đã nộp)"
+            height: 32
+          - nodeId: "2207:1742"
+            name: "Container (Action buttons form view: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "In bộ hồ sơ"
+          status_labels: []
+          other_text: []
+
+  "4":
+    name: "Biểu tổng hợp tình hình thực hiện chương trình xúc tiến ĐT"
+    spec_source: figma
+    figma_section: "2207:856"
+    figma_section_name: "UC 011-034: Quản lý bộ hồ sơ XTDT"
+    figma_shared_nodes:
+      - "2207:2692"   # ReportFormBIV3 — table component cho form B.IV.3 (header + body row + tổng)
+      - "2207:2358"   # Mẫu báo cáo có kỳ hạn + Nộp theo bộ hồ sơ — list view chung (reuse từ feature 3)
+    status: done
+    functions:
+      "17":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryForm.tsx"
+        tall_screen: false
+        screen_height: 1215
+        figma_nodes:
+          - "2207:1756"   # Form view: Mẫu B.IV.3 — Tab 2 active (Biểu tổng hợp) + Card Thông tin liên kết + Card Bảng dữ liệu (ReportFormBIV3 table) + action buttons (Hủy / Xem / Lưu nháp)
+          - "2207:1944"   # Container action buttons cuối form: Hủy / Xem / Lưu nháp
+        figma_sub_nodes:
+          - nodeId: "2207:1757"
+            name: "DashboardLayout"
+            height: 1165
+          - nodeId: "2207:1759"
+            name: "Main Content"
+            height: 1209
+          - nodeId: "2207:1760"
+            name: "PromotionReportForm"
+            height: 1165
+          - nodeId: "2207:1761"
+            name: "Container (Page header: LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 117
+          - nodeId: "2207:1775"
+            name: "Container (Tab List: Tab 1-4, Tab 2 active)"
+            height: 54
+          - nodeId: "2207:1792"
+            name: "Tab Panel (Tab 2: Biểu tổng hợp — Card Thông tin liên kết + Card Bảng dữ liệu)"
+            height: 685
+          - nodeId: "2207:1798"
+            name: "Card (Thông tin liên kết: Số công văn + Năm + Tên Bộ/UBND)"
+            height: 252
+          - nodeId: "2207:1819"
+            name: "Card (Bảng dữ liệu: Thêm hàng + ReportFormBIV3 table)"
+            height: 309
+          - nodeId: "2207:1944"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu B.IV.3: Biểu tổng hợp tình hình thực hiện chương trình xúc tiến đầu tư"
+            - "Thông tin liên kết"
+            - "Bảng dữ liệu"
+          field_labels:
+            - "Kèm theo công văn số"
+            - "Năm"
+            - "Tên Bộ/UBND cấp tỉnh lập báo cáo"
+          column_headers:
+            - "STT"
+            - "Tên hoạt động xúc tiến đầu tư"
+            - "Loại hoạt động"
+            - "Thời gian tổ chức"
+            - "Đơn vị chủ trì thực hiện"
+            - "Địa điểm tổ chức"
+            - "Trong nước"
+            - "Nước ngoài"
+            - "Địa bàn/tỉnh/vùng kêu gọi đầu tư"
+            - "Đơn vị phối hợp"
+            - "Kinh phí"
+            - "NS Bộ/địa phương"
+            - "CT XTTĐT quốc gia"
+            - "Khác"
+            - "Kinh phí quyết toán"
+            - "Hành động"
+          button_text:
+            - "Thêm hàng"
+            - "Chọn loại"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+          status_labels: []
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+            - "Số công văn"
+            - "2026"
+            - "Bộ tài chính"
+            - "Nhập tên hoạt động"
+            - "Đơn vị"
+            - "Địa điểm"
+            - "Địa bàn"
+            - "TỔNG"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Báo cáo đã gửi"
+            - "Danh sách báo cáo"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
+
+      "18":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ — bảng danh sách theo năm + bộ lọc + pagination (reuse từ feature 3 function 12)
+        figma_sub_nodes:
+          - nodeId: "2207:2362"
+            name: "YearlyPromotionReport (Main Content)"
+            height: 1234
+          - nodeId: "2207:2363"
+            name: "Container (Page header: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 32
+          - nodeId: "2207:2365"
+            name: "Card (Bộ lọc: search + Năm + Trạng thái kỳ + Trạng thái hồ sơ)"
+            height: 36
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách báo cáo theo năm)"
+            height: 1019
+          - nodeId: "2207:2394"
+            name: "YearlyPromotionReport (Pagination bar)"
+            height: 73
+        content_map:
+          section_titles:
+            - "QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+          field_labels:
+            - "Tìm kiếm theo mã báo cáo"
+          column_headers:
+            - "Năm báo cáo"
+            - "Mã bộ hồ sơ"
+            - "Số báo cáo đang xử lý"
+            - "Trạng thái hồ sơ"
+            - "Ngày cập nhật/nộp"
+            - "Hành động"
+          button_text:
+            - "Năm"
+            - "Trạng thái kỳ"
+            - "Trạng thái hồ sơ"
+            - "Lập báo cáo"
+            - "Import"
+            - "Previous"
+            - "Next"
+            - "Chỉnh sửa"
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+            - "Xóa"
+            - "Nộp"
+          status_labels:
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+          other_text:
+            - "NĂM 2026"
+            - "NĂM 2025"
+            - "NĂM 2024"
+            - "NĂM 2023"
+            - "NĂM 2022"
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+            - "2/3"
+            - "3/3"
+            - "15/04/2026 14:30"
+            - "28/12/2025 16:45"
+            - "15/12/2024 11:20"
+            - "Hiển thị"
+            - "/ trang"
+            - "10"
+            - "Kỳ báo cáo này chưa tới hạn"
+            - "Vui lòng đợi đến thời hạn để lập báo cáo"
+            - "Chưa có bộ hồ sơ nào cho năm này"
+            - "Nhấn \"Lập bộ báo cáo\" ở trên để tạo bộ hồ sơ mới"
+
+      "19":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryForm.tsx"
+        tall_screen: false
+        screen_height: 1215
+        figma_nodes:
+          - "2207:1756"   # Form view tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2207:2358"   # Nút Chỉnh sửa trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        figma_sub_nodes:
+          - nodeId: "2207:1798"
+            name: "Card (Thông tin liên kết — form fields)"
+            height: 252
+          - nodeId: "2207:1944"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu B.IV.3: Biểu tổng hợp tình hình thực hiện chương trình xúc tiến đầu tư"
+            - "Thông tin liên kết"
+            - "Bảng dữ liệu"
+          field_labels:
+            - "Kèm theo công văn số"
+            - "Năm"
+            - "Tên Bộ/UBND cấp tỉnh lập báo cáo"
+          column_headers: []
+          button_text:
+            - "Chỉnh sửa"
+            - "Thêm hàng"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+
+      "20":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — nút Xem chi tiết và Xem vòng đời cho các hàng đã nộp trong bảng
+        figma_sub_nodes:
+          - nodeId: "2207:2638"
+            name: "YearlyPromotionReport (Action buttons row — Đã nộp: Xem chi tiết / Xem vòng đời / In bộ hồ sơ / Export)"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+          status_labels:
+            - "Đã nộp"
+            - "3/3"
+          other_text:
+            - "HSXT-2023-001"
+            - "15/12/2024 11:20"
+
+      "21":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — badge trạng thái hồ sơ + action Nộp / Chỉnh sửa visible theo trạng thái (phía cơ quan quản lý)
+        figma_sub_nodes:
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách — nơi hiển thị badge trạng thái hồ sơ và actions phê duyệt)"
+            height: 1019
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Nộp"
+            - "Phê duyệt"
+            - "Từ chối"
+            - "Yêu cầu chỉnh sửa"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+          other_text:
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+
+      "22":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature4/ReportXTDTSummaryForm.tsx"
+        tall_screen: false
+        screen_height: 1215
+        figma_nodes:
+          - "2207:2358"   # List view — nút In bộ hồ sơ trong action bar của từng hàng
+          - "2207:1756"   # Form view — nút In nằm trong action bar (cùng vùng Hủy/Xem/Lưu nháp)
+        figma_sub_nodes:
+          - nodeId: "2207:2583"
+            name: "Button - In bộ hồ sơ (trong list view, hàng Đã nộp)"
+            height: 32
+          - nodeId: "2207:1944"
+            name: "Container (Action buttons form view: Hủy / Xem / Lưu nháp)"
+            height: 72
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "In bộ hồ sơ"
+          status_labels: []
+          other_text: []
+
+  "5":
+    name: "BC tình hình thực hiện cam kết/thỏa thuận hợp tác đầu tư/chủ trương đầu tư"
+    spec_source: figma
+    figma_section: "2207:856"
+    figma_section_name: "UC 011-034: Quản lý bộ hồ sơ XTDT"
+    figma_shared_nodes:
+      - "2207:2170"   # Table B.IV.4 Tab 4 — Danh mục dự án ĐTNN (2000x327, 12 cột + sub-header)
+      - "2207:2358"   # Mẫu báo cáo có kỳ hạn + Nộp theo bộ hồ sơ — list view chung (reuse từ feature 3)
+    status: done
+    functions:
+      "23":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:1959"   # Form view Tab 3 active: Mẫu B.IV.4 — Card Thông tin đơn vị + Card Danh sách cam kết đầu tư (table 9 cột) + action buttons (Hủy / Xem / Lưu nháp)
+          - "2207:2100"   # Form view Tab 4 active: Mẫu A.IV.4 — Card Thông tin đơn vị + Card Danh sách cam kết đầu tư (table 12 cột) + action buttons (Hủy / Xem / Lưu nháp / Gửi báo cáo)
+        figma_sub_nodes:
+          - nodeId: "2207:1960"
+            name: "DashboardLayout (Tab 3 active)"
+            height: 1165
+          - nodeId: "2207:1963"
+            name: "PromotionReportForm (Tab 3 content)"
+            height: 1165
+          - nodeId: "2207:1964"
+            name: "Container (Page header: LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 117
+          - nodeId: "2207:1978"
+            name: "Container (Tab List: Tab 1-4, Tab 3 active)"
+            height: 54
+          - nodeId: "2207:1994"
+            name: "Container (Tab Panel Tab 3: Cam kết đầu tư)"
+            height: 662
+          - nodeId: "2207:2003"
+            name: "Card (Thông tin đơn vị: Cơ quan lập báo cáo + Năm)"
+            height: 168
+          - nodeId: "2207:2020"
+            name: "Card (Danh sách cam kết đầu tư: Thêm hàng + Table 9 cột)"
+            height: 276
+          - nodeId: "2207:2086"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp)"
+            height: 72
+          - nodeId: "2207:2101"
+            name: "DashboardLayout (Tab 4 active)"
+            height: 1165
+          - nodeId: "2207:2104"
+            name: "PromotionReportForm (Tab 4 content)"
+            height: 1165
+          - nodeId: "2207:2136"
+            name: "Tab Panel (Tab 4: Dự án ĐTNN — Card Thông tin đơn vị + Card Danh sách)"
+            height: 684
+          - nodeId: "2207:2161"
+            name: "Card (Danh sách cam kết đầu tư Tab 4: Thêm hàng + Table 12 cột)"
+            height: 447
+          - nodeId: "2207:2170"
+            name: "Table B.IV.4 Tab 4 (2000x327 — 12 cột + sub-header Thuộc danh mục)"
+            height: 327
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons Tab 4: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu B.IV.4: Báo cáo tình hình thực hiện các cam kết/thỏa thuận"
+            - "Hợp tác đầu tư/Chủ trương đầu tư"
+            - "Mẫu A.IV.4: Danh mục dự án ĐTNN đang có nhà đầu tư quan tâm"
+            - "Thông tin đơn vị"
+            - "Danh sách cam kết đầu tư"
+          field_labels:
+            - "Cơ quan lập báo cáo"
+            - "Năm"
+          column_headers:
+            - "STT"
+            - "Tên dự án"
+            - "Đối tác"
+            - "Địa điểm dự án"
+            - "Ngành/Lĩnh vực"
+            - "Quy mô, công suất"
+            - "Tổng vốn ĐT (triệu đồng)"
+            - "Tình hình triển khai"
+            - "Hành động"
+            - "Tên nhà đầu tư *"
+            - "Nước đăng ký"
+            - "Vốn đăng ký dự kiến (USD)"
+            - "Ngành cấp 1"
+            - "Mục tiêu dự án"
+            - "Địa điểm"
+            - "Diện tích đất (m²)"
+            - "Thuộc danh mục dự án thu hút đầu tư"
+            - "Quốc gia"
+            - "Lĩnh vực"
+            - "Địa phương"
+            - "Đề xuất"
+          button_text:
+            - "Thêm hàng"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+            - "Nhập tên cơ quan lập báo cáo"
+            - "2026"
+            - "Chọn dự án"
+            - "Đối tác"
+            - "Địa điểm"
+            - "Ngành"
+            - "Quy mô"
+            - "0"
+            - "Tình hình thực hiện..."
+            - "TỔNG SỐ"
+            - "Samsung Electronics Co., Ltd."
+            - "Toyota Motor Corporation"
+            - "Intel Corporation"
+            - "Hàn Quốc"
+            - "Nhật Bản"
+            - "Hoa Kỳ"
+            - "KCN Bắc Ninh"
+            - "KCN Vĩnh Phúc"
+            - "TP. Hồ Chí Minh"
+            - "Nhập đề xuất..."
+            - "TỔNG: 3"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Báo cáo đã gửi"
+            - "Danh sách báo cáo"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
+
+      "24":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ — bảng danh sách theo năm + bộ lọc + pagination (reuse từ feature 3 function 12)
+        figma_sub_nodes:
+          - nodeId: "2207:2362"
+            name: "YearlyPromotionReport (Main Content)"
+            height: 1234
+          - nodeId: "2207:2363"
+            name: "Container (Page header: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 32
+          - nodeId: "2207:2365"
+            name: "Card (Bộ lọc: search + Năm + Trạng thái kỳ + Trạng thái hồ sơ)"
+            height: 36
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách báo cáo theo năm)"
+            height: 1019
+          - nodeId: "2207:2394"
+            name: "YearlyPromotionReport (Pagination bar)"
+            height: 73
+        content_map:
+          section_titles:
+            - "QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+          field_labels:
+            - "Tìm kiếm theo mã báo cáo"
+          column_headers:
+            - "Năm báo cáo"
+            - "Mã bộ hồ sơ"
+            - "Số báo cáo đang xử lý"
+            - "Trạng thái hồ sơ"
+            - "Ngày cập nhật/nộp"
+            - "Hành động"
+          button_text:
+            - "Năm"
+            - "Trạng thái kỳ"
+            - "Trạng thái hồ sơ"
+            - "Lập báo cáo"
+            - "Import"
+            - "Previous"
+            - "Next"
+            - "Chỉnh sửa"
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+            - "Xóa"
+            - "Nộp"
+          status_labels:
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+          other_text:
+            - "NĂM 2026"
+            - "NĂM 2025"
+            - "NĂM 2024"
+            - "NĂM 2023"
+            - "NĂM 2022"
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+            - "2/3"
+            - "3/3"
+            - "15/04/2026 14:30"
+            - "28/12/2025 16:45"
+            - "15/12/2024 11:20"
+            - "Hiển thị"
+            - "/ trang"
+            - "10"
+            - "Kỳ báo cáo này chưa tới hạn"
+            - "Vui lòng đợi đến thời hạn để lập báo cáo"
+            - "Chưa có bộ hồ sơ nào cho năm này"
+            - "Nhấn \"Lập bộ báo cáo\" ở trên để tạo bộ hồ sơ mới"
+
+      "25":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:1959"   # Form view Tab 3 tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2207:2100"   # Form view Tab 4 tái sử dụng cho mode Chỉnh sửa
+          - "2207:2358"   # Nút Chỉnh sửa trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        figma_sub_nodes:
+          - nodeId: "2207:2003"
+            name: "Card (Thông tin đơn vị — form fields Tab 3)"
+            height: 168
+          - nodeId: "2207:2086"
+            name: "Container (Action buttons Tab 3: Hủy / Xem / Lưu nháp)"
+            height: 72
+          - nodeId: "2207:2144"
+            name: "Card (Thông tin đơn vị — form fields Tab 4)"
+            height: 168
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons Tab 4: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Thông tin đơn vị"
+            - "Danh sách cam kết đầu tư"
+          field_labels:
+            - "Cơ quan lập báo cáo"
+            - "Năm"
+          column_headers: []
+          button_text:
+            - "Chỉnh sửa"
+            - "Thêm hàng"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+
+      "26":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — nút Xem chi tiết và Xem vòng đời cho các hàng đã nộp trong bảng
+        figma_sub_nodes:
+          - nodeId: "2207:2638"
+            name: "YearlyPromotionReport (Action buttons row — Đã nộp: Xem chi tiết / Xem vòng đời / In bộ hồ sơ / Export)"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+          status_labels:
+            - "Đã nộp"
+            - "3/3"
+          other_text:
+            - "HSXT-2023-001"
+            - "15/12/2024 11:20"
+
+      "27":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — badge trạng thái hồ sơ + action Nộp / Chỉnh sửa visible theo trạng thái (phía cơ quan quản lý)
+        figma_sub_nodes:
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách — nơi hiển thị badge trạng thái hồ sơ và actions phê duyệt)"
+            height: 1019
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Nộp"
+            - "Phê duyệt"
+            - "Từ chối"
+            - "Yêu cầu chỉnh sửa"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+          other_text:
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+
+      "28":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature5/ReportCommitmentForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:2358"   # List view — nút In bộ hồ sơ trong action bar của từng hàng
+          - "2207:1959"   # Form view Tab 3 — nút In nằm trong action bar (cùng vùng Hủy/Xem/Lưu nháp)
+          - "2207:2100"   # Form view Tab 4 — nút In nằm trong action bar (cùng vùng Hủy/Xem/Lưu nháp/Gửi)
+        figma_sub_nodes:
+          - nodeId: "2207:2583"
+            name: "Button - In bộ hồ sơ (trong list view, hàng Đã nộp)"
+            height: 32
+          - nodeId: "2207:2086"
+            name: "Container (Action buttons form view Tab 3: Hủy / Xem / Lưu nháp)"
+            height: 72
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons form view Tab 4: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "In bộ hồ sơ"
+          status_labels: []
+          other_text: []
+
+  "6":
+    name: "Danh mục dự án ĐTNN đang có NĐT quan tâm năm"
+    spec_source: figma
+    figma_section: "2207:856"
+    figma_section_name: "UC 011-034: Quản lý bộ hồ sơ XTDT"
+    figma_shared_nodes:
+      - "2207:2967"   # A.IV.4: Danh mục dự án ĐTNN đang có nhà đầu tư quan tâm — table component standalone (2000x327, 12 cột + sub-header)
+      - "2207:2358"   # Mẫu báo cáo có kỳ hạn + Nộp theo bộ hồ sơ — list view chung (reuse từ feature 3)
+    status: done
+    functions:
+      "29":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:2100"   # Form view Tab 4 active: Mẫu A.IV.4 — Card Thông tin đơn vị + Card Danh sách dự án ĐTNN (table 12 cột) + action buttons (Hủy / Xem / Lưu nháp / Gửi báo cáo)
+        figma_sub_nodes:
+          - nodeId: "2207:2101"
+            name: "DashboardLayout (Tab 4 active)"
+            height: 1165
+          - nodeId: "2207:2104"
+            name: "PromotionReportForm (Tab 4 content)"
+            height: 1165
+          - nodeId: "2207:2105"
+            name: "Container (Page header: LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 117
+          - nodeId: "2207:2119"
+            name: "Container (Tab List: Tab 1-4, Tab 4 active)"
+            height: 54
+          - nodeId: "2207:2136"
+            name: "Tab Panel (Tab 4: Dự án ĐTNN — Card Thông tin đơn vị + Card Danh sách)"
+            height: 684
+          - nodeId: "2207:2144"
+            name: "Card (Thông tin đơn vị: Tên đơn vị + Năm)"
+            height: 168
+          - nodeId: "2207:2161"
+            name: "Card (Danh sách dự án ĐTNN: Thêm hàng + Table A.IV.4 12 cột)"
+            height: 447
+          - nodeId: "2207:2170"
+            name: "Table A.IV.4 (2000x327 — 12 cột + sub-header Thuộc danh mục)"
+            height: 327
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu B.IV.4: Báo cáo tình hình thực hiện các cam kết/thỏa thuận"
+            - "Hợp tác đầu tư/Chủ trương đầu tư"
+            - "Mẫu A.IV.4: Danh mục dự án ĐTNN đang có nhà đầu tư quan tâm"
+            - "Thông tin đơn vị"
+            - "Danh sách cam kết đầu tư"
+          field_labels:
+            - "Tên đơn vị tổ chức/Cá nhân báo cáo"
+            - "Năm"
+          column_headers:
+            - "STT"
+            - "Tên nhà đầu tư *"
+            - "Nước đăng ký"
+            - "Tên dự án"
+            - "Vốn đăng ký dự kiến (USD)"
+            - "Ngành cấp 1"
+            - "Mục tiêu dự án"
+            - "Địa điểm"
+            - "Diện tích đất (m²)"
+            - "Thuộc danh mục dự án thu hút đầu tư"
+            - "Quốc gia"
+            - "Lĩnh vực"
+            - "Địa phương"
+            - "Đề xuất"
+          button_text:
+            - "Thêm hàng"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+            - "Nhập tên cơ quan lập báo cáo"
+            - "2026"
+            - "Samsung Electronics Co., Ltd."
+            - "Toyota Motor Corporation"
+            - "Intel Corporation"
+            - "Hàn Quốc"
+            - "Nhật Bản"
+            - "Hoa Kỳ"
+            - "Nhà máy sản xuất linh kiện điện tử"
+            - "Nhà máy lắp ráp ô tô"
+            - "Trung tâm R&D chip bán dẫn"
+            - "Công nghiệp chế tạo"
+            - "Sản xuất ô tô"
+            - "Công nghệ thông tin"
+            - "KCN Bắc Ninh"
+            - "KCN Vĩnh Phúc"
+            - "TP. Hồ Chí Minh"
+            - "Có"
+            - "Công nghệ cao"
+            - "Công nghiệp"
+            - "Ưu tiên"
+            - "Trọng điểm"
+            - "Ưu tiên cao"
+            - "Nhập đề xuất..."
+            - "TỔNG: 3"
+            - "2,500,000,000"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Báo cáo đã gửi"
+            - "Danh sách báo cáo"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
+
+      "30":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ — bảng danh sách theo năm + bộ lọc + pagination (reuse từ feature 3 function 12)
+        figma_sub_nodes:
+          - nodeId: "2207:2362"
+            name: "YearlyPromotionReport (Main Content)"
+            height: 1234
+          - nodeId: "2207:2363"
+            name: "Container (Page header: QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ)"
+            height: 32
+          - nodeId: "2207:2365"
+            name: "Card (Bộ lọc: search + Năm + Trạng thái kỳ + Trạng thái hồ sơ)"
+            height: 36
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách báo cáo theo năm)"
+            height: 1019
+          - nodeId: "2207:2394"
+            name: "YearlyPromotionReport (Pagination bar)"
+            height: 73
+        content_map:
+          section_titles:
+            - "QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+          field_labels:
+            - "Tìm kiếm theo mã báo cáo"
+          column_headers:
+            - "Năm báo cáo"
+            - "Mã bộ hồ sơ"
+            - "Số báo cáo đang xử lý"
+            - "Trạng thái hồ sơ"
+            - "Ngày cập nhật/nộp"
+            - "Hành động"
+          button_text:
+            - "Năm"
+            - "Trạng thái kỳ"
+            - "Trạng thái hồ sơ"
+            - "Lập báo cáo"
+            - "Import"
+            - "Previous"
+            - "Next"
+            - "Chỉnh sửa"
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+            - "Xóa"
+            - "Nộp"
+          status_labels:
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+          other_text:
+            - "NĂM 2026"
+            - "NĂM 2025"
+            - "NĂM 2024"
+            - "NĂM 2023"
+            - "NĂM 2022"
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+            - "2/3"
+            - "3/3"
+            - "15/04/2026 14:30"
+            - "28/12/2025 16:45"
+            - "15/12/2024 11:20"
+            - "Hiển thị"
+            - "/ trang"
+            - "10"
+            - "Kỳ báo cáo này chưa tới hạn"
+            - "Vui lòng đợi đến thời hạn để lập báo cáo"
+            - "Chưa có bộ hồ sơ nào cho năm này"
+            - "Nhấn \"Lập bộ báo cáo\" ở trên để tạo bộ hồ sơ mới"
+
+      "31":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:2100"   # Form view Tab 4 tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2207:2358"   # Nút Chỉnh sửa trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        figma_sub_nodes:
+          - nodeId: "2207:2144"
+            name: "Card (Thông tin đơn vị — form fields Tab 4)"
+            height: 168
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles:
+            - "LẬP BỘ BÁO CÁO XÚC TIẾN ĐẦU TƯ"
+            - "Mẫu A.IV.4: Danh mục dự án ĐTNN đang có nhà đầu tư quan tâm"
+            - "Thông tin đơn vị"
+            - "Danh sách cam kết đầu tư"
+          field_labels:
+            - "Tên đơn vị tổ chức/Cá nhân báo cáo"
+            - "Năm"
+          column_headers: []
+          button_text:
+            - "Chỉnh sửa"
+            - "Thêm hàng"
+            - "Hủy"
+            - "Xem"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+          other_text:
+            - "Tab 1: Báo cáo kết quả"
+            - "Tab 2: Biểu tổng hợp"
+            - "Tab 3: Cam kết đầu tư"
+            - "Tab 4: Dự án ĐTNN"
+
+      "32":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — nút Xem chi tiết và Xem vòng đời cho các hàng đã nộp trong bảng
+        figma_sub_nodes:
+          - nodeId: "2207:2638"
+            name: "YearlyPromotionReport (Action buttons row — Đã nộp: Xem chi tiết / Xem vòng đời / In bộ hồ sơ / Export)"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In bộ hồ sơ"
+            - "Export"
+          status_labels:
+            - "Đã nộp"
+            - "3/3"
+          other_text:
+            - "HSXT-2023-001"
+            - "15/12/2024 11:20"
+
+      "33":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectList.tsx"
+        tall_screen: false
+        screen_height: 1214
+        figma_nodes:
+          - "2207:2358"   # List view — badge trạng thái hồ sơ + action Nộp / Chỉnh sửa visible theo trạng thái (phía cơ quan quản lý)
+        figma_sub_nodes:
+          - nodeId: "2207:2393"
+            name: "Card (Bảng danh sách — nơi hiển thị badge trạng thái hồ sơ và actions phê duyệt)"
+            height: 1019
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Nộp"
+            - "Phê duyệt"
+            - "Từ chối"
+            - "Yêu cầu chỉnh sửa"
+          status_labels:
+            - "Lưu nháp"
+            - "Yêu cầu chỉnh sửa"
+            - "Đã nộp"
+            - "Chưa tới hạn nộp báo cáo"
+            - "Trong thời hạn nộp báo cáo"
+            - "Qua hạn nộp báo cáo"
+          other_text:
+            - "HSXT-2025-001"
+            - "HSXT-2024-001"
+            - "HSXT-2023-001"
+
+      "34":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature6/ReportFDIProjectForm.tsx"
+        tall_screen: false
+        screen_height: 1230
+        figma_nodes:
+          - "2207:2358"   # List view — nút In bộ hồ sơ trong action bar của từng hàng
+          - "2207:2100"   # Form view Tab 4 — nút In nằm trong action bar (cùng vùng Hủy/Xem/Lưu nháp/Gửi)
+        figma_sub_nodes:
+          - nodeId: "2207:2583"
+            name: "Button - In bộ hồ sơ (trong list view, hàng Đã nộp)"
+            height: 32
+          - nodeId: "2207:2339"
+            name: "Container (Action buttons form view Tab 4: Hủy / Xem / Lưu nháp / Gửi báo cáo)"
+            height: 72
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "In bộ hồ sơ"
+          status_labels: []
+          other_text: []
+
+  "34":
+    name: "Báo cáo tình hình hoạt động đầu tư ra nước ngoài cho năm tài chính (Mẫu I.17)"
+    spec_source: figma
+    figma_section: "2006:891"
+    figma_section_name: "UC191-196: Báo cáo tình hình hoạt động đầu tư ra nước ngoài cho năm tài chính (Mẫu I.17)"
+    figma_shared_nodes:
+      - "2360:2349"   # Sidebar (instance shared in list view)
+      - "1933:1049"   # Sidebar (instance shared in form view)
+    status: done
+    functions:
+      "191":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17Form.tsx"
+        figma_nodes:
+          - "1933:1088"   # Form view toàn bộ: App/Body + các section I-V (Tình trạng hoạt động, Đánh giá kết quả đầu tư, Kiến nghị, Cam kết, Hồ sơ kèm theo) + action buttons
+          - "2322:1281"   # Container action buttons: Hủy / Xem / Lưu nháp / Gửi báo cáo
+        note: "Frame 1933:1088 là form Lập báo cáo I.17. Container 2322:1281 chứa 4 action buttons ở cuối form (Hủy, Xem, Lưu nháp, Gửi báo cáo). Frame 2307:1240 chứa nội dung form sections I-V."
+      "192":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17List.tsx"
+        figma_nodes:
+          - "2360:2347"   # List view: DashboardLayout + Sidebar + Main Content = tiêu đề + Card AnnualFinancialReport + Table danh sách báo cáo + pagination
+        note: "Frame 2360:2347 là màn hình danh sách báo cáo I.17 (list view). Card 2360:2418/2436 chứa bộ lọc và bảng danh sách. Nút Export/Import nằm trong action bar (2360:2406/2360:2407/2360:2412)."
+      "193":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17Form.tsx"
+        figma_nodes:
+          - "1933:1088"   # Form view tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2360:2347"   # Nút Chỉnh sửa trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        note: "Không có frame Chỉnh sửa riêng — dùng chung form 1933:1088 với mode edit, tương tự feature 33 pattern."
+      "194":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17List.tsx"
+        figma_nodes:
+          - "2360:2347"   # List view — nút Xem chi tiết và Xem vòng đời cho các hàng đã nộp trong bảng
+        note: "Actions Xem chi tiết và Xem vòng đời trong list view navigate sang /feature-34/:id/view. Nút Xem (button 2322:1284) trong action bar form cũng thuộc function này."
+      "195":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17List.tsx"
+        figma_nodes:
+          - "2360:2347"   # List view — action Yêu cầu chỉnh sửa / Phê duyệt visible trong bảng (phía cơ quan quản lý)
+        note: "Action Phê duyệt/Từ chối/Yêu cầu chỉnh sửa trong list view. Tương tự feature 33 function 189 — flow phê duyệt từ phía cơ quan quản lý."
+      "196":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature34/ReportI17Form.tsx"
+        figma_nodes:
+          - "1933:1088"   # Form view — nút In nằm trong action bar (cùng vùng với Hủy/Xem/Lưu nháp/Gửi)
+          - "2322:1281"   # Container action buttons — xác nhận vị trí nút In
+        note: "Nút In báo cáo gọi window.print() nằm trong action bar cuối form, hiển thị ở cả 3 mode (create/edit/view). Tương tự feature 33 function 190."
+
+  "33":
+    name: "Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)"
+    spec_source: figma
+    figma_section: "1337:786"
+    figma_section_name: "UC 185-190. Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)"
+    figma_shared_nodes:
+      - "1559:2466"   # Sidebar (instance shared)
+    status: done
+    functions:
+      "185":
+        name: "Lập + Lưu nháp + Gửi (Nộp) báo cáo"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16Form.tsx"
+        figma_nodes:
+          - "1559:2503"   # Form view toàn bộ: App/breadcrumb + ProjectSelector + ReportHeader + InvestorSection + ProjectInfoSection + OperationsTable + ProgressSection + DescriptionSection + ForecastNextYearSection + action buttons (Lưu nháp / Nộp)
+          - "2360:996"    # List view — chứa nút "Lập báo cáo" và "Import" theo từng năm, trạng thái "Lưu nháp → Nộp"
+        note: "Form 1559:2503 là màn hình Lập báo cáo (height=5862px — rất dài). Nút Lưu nháp và Nộp nằm trong Container 1559:2531 ở cuối form."
+      "186":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16List.tsx"
+        figma_nodes:
+          - "2360:996"    # List view — bảng danh sách báo cáo theo năm (2024-2027), cột: Kỳ báo cáo / Ngày cập nhật/nộp / Trạng thái báo cáo, nút Export + Import
+        note: "Lọc (filter) và Export/Import nằm trong list view. Không có frame Filter riêng — đây là inline action trong bảng."
+      "187":
+        name: "Chỉnh sửa báo cáo"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16Form.tsx"
+        figma_nodes:
+          - "1559:2503"   # Form view tái sử dụng cho Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "2360:996"    # Nút "Chỉnh sửa" trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        note: "Không có frame Chỉnh sửa riêng — dùng chung form 1559:2503 với mode edit."
+      "188":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16List.tsx"
+        figma_nodes:
+          - "2360:996"    # List view — nút "Xem chi tiết" và "Xem vòng đời" cho hàng trạng thái "Đã nộp" (năm 2024-2025)
+        note: "Actions Xem chi tiết và Xem vòng đời trong list navigate sang /feature-33/:id/view."
+      "189":
+        name: "Phê duyệt / Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16List.tsx"
+        figma_nodes:
+          - "2360:996"    # Có action "Yêu cầu chỉnh sửa" visible trong list — flow phê duyệt từ phía cơ quan quản lý
+        note: "Action Yêu cầu chỉnh sửa visible trong list (badge warning). Xem chi tiết + nút Yêu cầu chỉnh sửa trong form view mode."
+      "190":
+        name: "In báo cáo"
+        status: done
+        file_path: "app/src/pages/feature33/ReportI16Form.tsx"
+        figma_nodes:
+          - "1559:2503"   # Form view — nút In nằm trong action bar cuối form
+        note: "Nút In báo cáo gọi window.print() nằm trong action bar cuối form, hiển thị ở cả 3 mode (create/edit/view)."
+
+  "43":
+    name: "Tình hình thu hút đầu tư vào khu công nghiệp trong kỳ báo cáo"
+    spec_source: figma
+    figma_section: "1890:4916"
+    figma_section_name: "UC 239-244: Tình hình thu hút đầu tư vào khu công nghiệp trong kỳ báo cáo"
+    figma_shared_nodes:
+      - "2241:1257"   # Tab List (Dự án đầu tư nước ngoài / Dự án đầu tư trong nước)
+      - "2358:1222"   # Tab List (instance trong details view tab trong nước)
+    status: done
+    functions:
+      "239":
+        name: "Xem danh sách báo cáo tình hình thu hút đầu tư vào KCN"
+        status: done
+        file_path: "app/src/pages/feature42/ReportKCNList.tsx"
+        tall_screen: false
+        screen_height: 1062
+        figma_nodes:
+          - "1752:2245"   # UC 239-244: List view - Tình hình thu hút đầu tư vào khu công nghiệp trong kỳ báo cáo
+        figma_sub_nodes:
+          - nodeId: "1752:2248"
+            name: "Main Content"
+            height: 411
+          - nodeId: "1752:2252"
+            name: "Container (Bộ lọc bar)"
+            height: 36
+          - nodeId: "1752:2269"
+            name: "Container (Table danh sách)"
+            height: 203
+        content_map:
+          section_titles:
+            - "Tình hình thu hút đầu tư vào khu công nghiệp"
+          field_labels:
+            - "Bộ lọc:"
+          column_headers:
+            - "STT"
+            - "Mã báo cáo"
+            - "Mã biểu số"
+            - "Tên biểu mẫu"
+            - "Nhóm báo cáo"
+            - "Kỳ báo cáo"
+            - "Đơn vị báo cáo"
+            - "Người nộp"
+            - "Ngày nộp"
+            - "Trạng thái"
+            - "Đơn vị tiếp nhận"
+            - "Ghi chú"
+            - "Hoạt động"
+          button_text:
+            - "Nhóm báo cáo"
+            - "Trạng thái"
+            - "Kỳ báo cáo"
+            - "Previous"
+            - "Next"
+          status_labels:
+            - "Đã duyệt"
+            - "Chờ duyệt"
+            - "Nháp"
+          other_text:
+            - "Hiển thị 1-10 bản ghi"
+            - "Số dòng mỗi trang:"
+            - "0 được chọn"
+            - "BC-2026-001"
+            - "BC-2026-002"
+            - "BC-2026-003"
+            - "M01-KCN"
+            - "Đầu tư nước ngoài"
+            - "Đầu tư trong nước"
+            - "Quý 1"
+            - "Quý 2"
+            - "KCN Tân Thuận"
+            - "KCN Việt Nam"
+            - "KCN Linh Trung"
+            - "Đã hoàn thành đúng hạn"
+            - "Đang cập nhật dữ liệu"
+            - "Bộ Kế hoạch và Đầu tư"
+
+      "240":
+        name: "Xem chi tiết báo cáo - Tab dự án nước ngoài (nhập liệu theo KCN)"
+        status: done
+        file_path: "app/src/pages/feature42/ReportKCNDetail.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "2241:1240"   # UC 239-244: Details view - Tab dự án nước ngoài
+        figma_sub_nodes:
+          - nodeId: "2241:1244"
+            name: "ReportDetailView"
+            height: 483
+          - nodeId: "2241:1245"
+            name: "Container (Header: Quay lại + tiêu đề)"
+            height: 57
+          - nodeId: "2241:1257"
+            name: "Tab List"
+            height: 36
+          - nodeId: "2241:1262"
+            name: "Tab Panel (nước ngoài)"
+            height: 286
+          - nodeId: "2241:1590"
+            name: "Container (Action buttons: Hủy / Lưu nháp / Gửi báo cáo)"
+            height: 40
+        content_map:
+          section_titles:
+            - "Tình hình thu hút đầu tư vào khu công nghiệp trong"
+          field_labels:
+            - "Mã báo cáo: BC-2026-001 • Kỳ báo cáo: Quý 1"
+          column_headers:
+            - "STT"
+            - "Tên KCN"
+            - "Số DA cấp mới"
+            - "Vốn ĐK mới (tr.USD)"
+            - "Số DA tăng vốn"
+            - "Vốn tăng (tr.USD)"
+            - "Số DA giảm vốn"
+            - "Vốn giảm (tr.USD)"
+            - "Số DA thu hồi"
+            - "Vốn thu hồi (tr.USD)"
+            - "Biến động DT (ha)"
+            - "Doanh thu (tr.USD)"
+            - "Xuất khẩu (tr.USD)"
+            - "Nhập khẩu (tr.USD)"
+            - "Nộp NS (tỷ VNĐ)"
+            - "Xóa"
+          button_text:
+            - "Quay lại"
+            - "Thêm khu công nghiệp"
+            - "Hủy"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Dự án đầu tư nước ngoài"
+            - "Dự án đầu tư trong nước"
+            - "KCN Tân Thuận"
+            - "Tổng cộng"
+
+      "241":
+        name: "Xem chi tiết báo cáo - Tab dự án trong nước (nhập liệu theo KCN)"
+        status: done
+        file_path: "app/src/pages/feature42/ReportKCNDetail.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "2241:1684"   # UC 239-244: Details view - Tab dự án trong nước
+        figma_sub_nodes:
+          - nodeId: "2241:1688"
+            name: "ReportDetailView"
+            height: 496
+          - nodeId: "2241:1689"
+            name: "Container (Header: Quay lại + tiêu đề)"
+            height: 57
+          - nodeId: "2358:1222"
+            name: "Tab List"
+            height: 36
+          - nodeId: "2241:1706"
+            name: "Tab Panel (trong nước)"
+            height: 365
+          - nodeId: "2241:1822"
+            name: "Container (Action buttons: Hủy / Lưu nháp / Gửi báo cáo)"
+            height: 40
+        content_map:
+          section_titles:
+            - "Tình hình thu hút đầu tư vào khu công nghiệp trong"
+          field_labels:
+            - "Mã báo cáo: BC-2026-001 • Kỳ báo cáo: Quý 1"
+          column_headers:
+            - "STT"
+            - "Tên KCN"
+            - "Số DA cấp mới"
+            - "Vốn ĐK mới (tỷ VNĐ)"
+            - "Số DA tăng vốn"
+            - "Vốn tăng (tỷ VNĐ)"
+            - "Số DA giảm vốn"
+            - "Vốn giảm (tỷ VNĐ)"
+            - "Số DA thu hồi"
+            - "Vốn thu hồi (tỷ VNĐ)"
+            - "Biến động DT (ha)"
+            - "Doanh thu (tỷ VNĐ)"
+            - "Xuất khẩu (tỷ VNĐ)"
+            - "Nhập khẩu (tỷ VNĐ)"
+            - "Nộp NS (tỷ VNĐ)"
+            - "Xóa"
+          button_text:
+            - "Quay lại"
+            - "Thêm khu công nghiệp"
+            - "Hủy"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Dự án đầu tư nước ngoài"
+            - "Dự án đầu tư trong nước"
+            - "KCN Việt Nam - Singapore"
+            - "Tổng cộng"
+
+  "52":
+    name: "Tình hình thu hút dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong khu kinh tế lũy kế đến cuối kỳ báo cáo (Không bao gồm các dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong KCN, KCX)"
+    spec_source: figma
+    figma_section: "1908:4917"
+    figma_section_name: "UC 299-304: Tình hình thu hút dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong khu kinh tế lũy kế đến cuối kỳ báo cáo"
+    figma_shared_nodes:
+      - "1908:6539"   # Sidebar (instance trong list view)
+      - "2372:1291"   # Sidebar (instance trong form/detail view)
+      - "2372:1016"   # Tab List (Khu đang vận hành / Khu đang xây dựng cơ bản)
+      - "1920:6824"   # Action dropdown menu (Xem chi tiết / Xem vòng đời / In / Export)
+    status: done
+    functions:
+      "299":
+        name: "Lập + Lưu nháp + Gửi Báo cáo"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTDetail.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "2372:996"    # Form/Detail view: App/Body + EconomicZoneReportDetailView + Tab List (Khu đang vận hành / Khu đang xây dựng cơ bản) + table nhập liệu + action buttons (Hủy / Lưu nháp / Gửi báo cáo)
+          - "2372:1617"   # Container action buttons: Hủy / Lưu nháp / Gửi báo cáo
+        figma_sub_nodes:
+          - nodeId: "2372:1000"
+            name: "EconomicZoneReportDetailView (Main Content)"
+            height: 402
+          - nodeId: "2372:1001"
+            name: "Container (Header: Quay lại + tiêu đề Lập báo cáo KKT)"
+            height: 36
+          - nodeId: "2372:1015"
+            name: "Container (Tab List + table nhập liệu)"
+            height: 214
+          - nodeId: "2372:1016"
+            name: "Tab List (Khu đang vận hành / Khu đang xây dựng cơ bản)"
+            height: 36
+          - nodeId: "2372:1021"
+            name: "Container (Table nhập liệu)"
+            height: 94
+          - nodeId: "2372:1617"
+            name: "Container (Action buttons: Hủy / Lưu nháp / Gửi báo cáo)"
+            height: 40
+        content_map:
+          section_titles:
+            - "Lập báo cáo KKT"
+            - "Tình hình thu hút dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong khu kinh tế"
+          field_labels: []
+          column_headers:
+            - "STT *"
+            - "KKT *"
+            - "Loại hình *"
+            - "Tên dự án/khu chức năng *"
+            - "Địa điểm *"
+            - "Văn bản thành lập *"
+            - "Tên nhà đầu tư *"
+            - "Quốc tịch *"
+            - "Tình trạng *"
+            - "Diện tích quy hoạch (ha)"
+            - "Diện tích thành lập (ha)"
+            - "Diện tích hoạt động (ha)"
+            - "VĐT NN - Đăng ký (tr.USD)"
+            - "VĐT NN - Thực hiện (tr.USD)"
+            - "VĐT TN - Đăng ký (tỷ VNĐ)"
+            - "VĐT TN - Thực hiện (tỷ VNĐ)"
+            - "Doanh thu (tr.USD)"
+            - "Xuất khẩu (tr.USD)"
+            - "Nhập khẩu (tr.USD)"
+            - "Nộp NS (tỷ VNĐ)"
+            - "Xóa"
+          button_text:
+            - "Quay lại"
+            - "Thêm khu công nghiệp"
+            - "Hủy"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Khu đang vận hành"
+            - "Khu đang xây dựng cơ bản"
+            - "Khu kinh tế Vân Đồn"
+            - "KKT ven biển"
+            - "Khu công nghiệp A"
+            - "Tập đoàn ABC"
+            - "Đã đi vào hoạt động"
+            - "Tổng cộng"
+        note: "Frame 2372:996 là màn hình Form/Detail view lập báo cáo KKT (height=1064px). Tab List 2372:1016 gồm 2 tabs: Khu đang vận hành / Khu đang xây dựng cơ bản. Action buttons Hủy / Lưu nháp / Gửi báo cáo nằm trong Container 2372:1617."
+
+      "300":
+        name: "Thao tác với báo cáo: Xem + Lọc + Export + Import"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTList.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "1908:6298"   # List view: App/Sidebar + Main Content = tiêu đề + bộ lọc (kỳ báo cáo, trạng thái) + danh sách báo cáo theo kỳ (Quý 1-4/2026) + pagination
+          - "1920:6824"   # Action dropdown: Xem chi tiết / Xem vòng đời / In / Export
+        figma_sub_nodes:
+          - nodeId: "1908:6301"
+            name: "Main Content"
+            height: 749
+          - nodeId: "1908:6302"
+            name: "Container (Tiêu đề trang)"
+            height: 72
+          - nodeId: "1908:6304"
+            name: "Container (Bộ lọc: search + kỳ báo cáo + trạng thái)"
+            height: 36
+          - nodeId: "1908:6321"
+            name: "Container (Danh sách báo cáo theo kỳ)"
+            height: 505
+          - nodeId: "1920:6848"
+            name: "Container (Pagination)"
+            height: 40
+        content_map:
+          section_titles:
+            - "Tình hình thu hút dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong khu kinh tế"
+            - "Danh sách báo cáo"
+          field_labels:
+            - "Tìm kiếm theo kỳ báo cáo hoặc mã báo cáo..."
+          column_headers: []
+          button_text:
+            - "Tất cả kỳ báo cáo"
+            - "Tất cả trạng thái"
+            - "Lập báo cáo"
+            - "Import"
+            - "Previous"
+            - "Next"
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+            - "In"
+            - "Export"
+          status_labels:
+            - "Đã duyệt"
+            - "Đã nộp"
+            - "Đã kết thúc"
+            - "Sắp hết hạn"
+            - "Đang diễn ra"
+            - "Chưa bắt đầu"
+          other_text:
+            - "Quý 1/2026"
+            - "2026-01-01 - 2026-03-31 • 2 báo cáo"
+            - "BC-KKT-2026-Q1-001"
+            - "Cập nhật: 2026-03-28"
+            - "BC-KKT-2026-Q1-002"
+            - "Cập nhật: 2026-03-25"
+            - "Quý 2/2026"
+            - "2026-04-01 - 2026-06-30 • 2 báo cáo"
+            - "Quý 3/2026"
+            - "2026-07-01 - 2026-09-30 • 1 báo cáo"
+            - "Quý 4/2026"
+            - "2026-10-01 - 2026-12-31 • 0 báo cáo"
+            - "Hiển thị 1-10 bản ghi"
+            - "Số dòng mỗi trang:"
+            - "10"
+            - "Dashboard"
+            - "Báo cáo đã gửi"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+        note: "Frame 1908:6298 là màn hình List view báo cáo KKT. Danh sách được nhóm theo kỳ báo cáo (Quý 1-4/2026) mỗi kỳ có badge trạng thái. Action dropdown 1920:6824 chứa 4 options: Xem chi tiết / Xem vòng đời / In / Export."
+
+      "301":
+        name: "Chỉnh sửa"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTDetail.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "2372:996"    # Form view tái sử dụng cho mode Chỉnh sửa (cùng form Lập với dữ liệu đã điền)
+          - "1908:6298"   # Nút Chỉnh sửa/Lập báo cáo trong list view (trạng thái Lưu nháp / Yêu cầu chỉnh sửa)
+        figma_sub_nodes:
+          - nodeId: "2372:1000"
+            name: "EconomicZoneReportDetailView (Main Content)"
+            height: 402
+          - nodeId: "2372:1617"
+            name: "Container (Action buttons: Hủy / Lưu nháp / Gửi báo cáo)"
+            height: 40
+        content_map:
+          section_titles:
+            - "Lập báo cáo KKT"
+          field_labels: []
+          column_headers:
+            - "STT *"
+            - "KKT *"
+            - "Loại hình *"
+            - "Tên dự án/khu chức năng *"
+            - "Địa điểm *"
+            - "Văn bản thành lập *"
+            - "Tên nhà đầu tư *"
+            - "Quốc tịch *"
+            - "Tình trạng *"
+            - "Diện tích quy hoạch (ha)"
+            - "Diện tích thành lập (ha)"
+            - "Diện tích hoạt động (ha)"
+            - "VĐT NN - Đăng ký (tr.USD)"
+            - "VĐT NN - Thực hiện (tr.USD)"
+            - "VĐT TN - Đăng ký (tỷ VNĐ)"
+            - "VĐT TN - Thực hiện (tỷ VNĐ)"
+            - "Doanh thu (tr.USD)"
+            - "Xuất khẩu (tr.USD)"
+            - "Nhập khẩu (tr.USD)"
+            - "Nộp NS (tỷ VNĐ)"
+            - "Xóa"
+          button_text:
+            - "Quay lại"
+            - "Thêm khu công nghiệp"
+            - "Hủy"
+            - "Lưu nháp"
+            - "Gửi báo cáo"
+          status_labels: []
+          other_text:
+            - "Khu đang vận hành"
+            - "Khu đang xây dựng cơ bản"
+            - "Tổng cộng"
+        note: "Không có frame Chỉnh sửa riêng — dùng chung form 2372:996 với mode edit, tương tự feature 42 pattern. Nút Lập báo cáo trong list view (1908:6298) trigger navigate sang form với dữ liệu đã có."
+
+      "302":
+        name: "Xem báo cáo đã nộp trong quá khứ + Xem vòng đời"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTList.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "1908:6298"   # List view — action Xem chi tiết / Xem vòng đời trong dropdown menu của từng hàng
+          - "1920:6824"   # Action dropdown: Xem chi tiết / Xem vòng đời
+        figma_sub_nodes:
+          - nodeId: "1920:6825"
+            name: "Menu Item - Xem chi tiết"
+            height: 32
+          - nodeId: "1920:6830"
+            name: "Menu Item - Xem vòng đời"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Xem chi tiết"
+            - "Xem vòng đời"
+          status_labels:
+            - "Đã duyệt"
+            - "Đã nộp"
+          other_text:
+            - "BC-KKT-2026-Q1-001"
+            - "BC-KKT-2026-Q1-002"
+        note: "Actions Xem chi tiết và Xem vòng đời nằm trong dropdown menu 1920:6824 của mỗi hàng báo cáo trong list view. Navigate sang /feature-52/:id/view hoặc /feature-52/:id/lifecycle tương tự pattern feature 42."
+
+      "303":
+        name: "Phê duyệt/Từ chối báo cáo"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTList.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "1908:6298"   # List view — badge trạng thái (Đã duyệt / Đã nộp / Chờ duyệt) hiển thị trong bảng; phía cơ quan quản lý có action Phê duyệt / Từ chối
+        figma_sub_nodes:
+          - nodeId: "1908:6321"
+            name: "Container (Danh sách báo cáo — nơi hiển thị badge trạng thái)"
+            height: 505
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "Phê duyệt"
+            - "Từ chối"
+            - "Yêu cầu chỉnh sửa"
+          status_labels:
+            - "Đã duyệt"
+            - "Đã nộp"
+            - "Chờ duyệt"
+            - "Yêu cầu chỉnh sửa"
+          other_text:
+            - "BC-KKT-2026-Q1-001"
+            - "BC-KKT-2026-Q1-002"
+        note: "Không có frame Phê duyệt riêng — flow phê duyệt từ phía cơ quan quản lý thực hiện trong list view 1908:6298 hoặc detail view. Tương tự pattern feature 42 function 303."
+
+      "304":
+        name: "In"
+        status: done
+        file_path: "app/src/pages/feature52/ReportKKTDetail.tsx"
+        tall_screen: false
+        screen_height: 1064
+        figma_nodes:
+          - "2372:996"    # Form/Detail view — nút In nằm trong action dropdown (cùng vùng với Xem chi tiết / Xem vòng đời)
+          - "1920:6824"   # Action dropdown: mục In
+        figma_sub_nodes:
+          - nodeId: "1920:6835"
+            name: "Menu Item - In"
+            height: 32
+        content_map:
+          section_titles: []
+          field_labels: []
+          column_headers: []
+          button_text:
+            - "In"
+          status_labels: []
+          other_text: []
+        note: "Nút In báo cáo gọi window.print() nằm trong action dropdown menu 1920:6824 (Menu Item 1920:6835). Hiển thị ở cả list view và detail view. Tương tự feature 42 pattern."

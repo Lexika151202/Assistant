@@ -1,8 +1,20 @@
 {
-  "prefersReducedMotion": false,
   "permissions": {
     "allow": [
-      "Bash(bash *)"
+      "Bash(bash *)",
+      "mcp__plugin_figma_figma__get_metadata",
+      "mcp__plugin_figma_figma__whoami",
+      "mcp__figma__get_metadata",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "mcp__figma__get_design_context",
+      "Bash(grep -oE '\"name=\\\\\\\\\"[^\\\\\\\\]+\\\\\\\\\"' \"C:/Users/admin/.claude/projects/C--Users-admin-Documents-Project-Test-WK/b275be8c-3f6c-4c61-ab51-815a678c4973/tool-results/toolu_vrtx_015xNd3ePoH7FowtX4tSXe3d.json\")",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(node -e ' *)",
+      "Bash(node *)",
+      "Bash(pip install *)",
+      "mcp__plugin_figma_figma__get_design_context"
     ]
-  }
+  },
+  "prefersReducedMotion": false
 }
