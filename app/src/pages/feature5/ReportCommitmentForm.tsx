@@ -32,6 +32,12 @@ interface BIV4Row {
   tinhHinhTrienKhai: string;
 }
 
+const biv4ProjectDb: Record<string, Omit<BIV4Row, 'key' | 'stt'>> = {
+  'DA-001': { tenDuAn: 'DA-001', doiTac: 'Samsung Electronics', diaDiemDuAn: 'KCN Bắc Ninh', nganhLinhVuc: 'Điện tử, bán dẫn', quyMoCongSuat: '500 MW', tongVonDT: 500000, tinhHinhTrienKhai: 'Đang triển khai giai đoạn 1' },
+  'DA-002': { tenDuAn: 'DA-002', doiTac: 'Toyota Motor Corp.', diaDiemDuAn: 'KCN Vĩnh Phúc', nganhLinhVuc: 'Sản xuất ô tô', quyMoCongSuat: '800 lao động', tongVonDT: 800000, tinhHinhTrienKhai: 'Hoàn thành giai đoạn 1' },
+  'DA-003': { tenDuAn: 'DA-003', doiTac: 'Intel Corporation', diaDiemDuAn: 'TP. Hồ Chí Minh', nganhLinhVuc: 'Công nghệ thông tin', quyMoCongSuat: '300 lao động', tongVonDT: 1200000, tinhHinhTrienKhai: 'Đang xây dựng' },
+};
+
 const initialBIV4Rows: BIV4Row[] = [
   {
     key: 'r1',
@@ -151,16 +157,19 @@ function BIV4Table({
   isView,
   onRowChange,
   onDeleteRow,
+  onProjectSelect,
 }: {
   rows: BIV4Row[];
   isView: boolean;
   onRowChange: (key: string, field: keyof BIV4Row, value: string | number) => void;
   onDeleteRow: (key: string) => void;
+  onProjectSelect: (key: string, projectCode: string) => void;
 }) {
   const totalVon = rows.reduce((acc, r) => acc + r.tongVonDT, 0);
 
   const inputCls = 'w-full bg-[#f3f3f5] border border-transparent rounded-[8px] px-2 py-1 text-[13px] text-[#0a0a0a] outline-none focus:border-[#a50000] focus:bg-white transition-colors';
   const numInputCls = inputCls + ' text-right';
+  const disabledInputCls = 'w-full bg-[#f9fafb] border border-transparent rounded-[8px] px-2 py-1 text-[13px] text-[#0a0a0a] outline-none';
   const thCls = 'border border-[#d1d5dc] px-2 py-2 text-[13px] font-bold text-[#0a0a0a] text-center bg-[#f9fafb]';
   const tdCls = 'border border-[#d1d5dc] px-1 py-1 text-[13px] text-[#0a0a0a]';
 
@@ -181,21 +190,26 @@ function BIV4Table({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+          {rows.map((row) => {
+            const rowDisabled = isView || !row.tenDuAn;
+            const fieldInputCls = rowDisabled ? disabledInputCls : inputCls;
+            return (
             <tr key={row.key} className="hover:bg-[#f9fafb]">
               <td className={tdCls + ' text-center'}>{row.stt}</td>
               <td className={tdCls}>
                 {isView ? (
                   <span>{row.tenDuAn}</span>
                 ) : (
-                  <div className="flex items-center justify-between bg-[#f3f3f5] rounded-[8px] px-2 py-1 gap-1">
-                    <span className="text-[13px] text-[#717182] flex-1 truncate">
-                      {row.tenDuAn || 'Chọn dự án'}
-                    </span>
-                    <svg className="w-4 h-4 text-[#717182] shrink-0" fill="none" viewBox="0 0 16 16">
-                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
+                  <select
+                    className="w-full h-8 px-2 bg-[#f3f3f5] border border-transparent rounded-[8px] text-[13px] text-[#0a0a0a] outline-none appearance-none cursor-pointer focus:border-[#a50000]"
+                    value={row.tenDuAn}
+                    onChange={(e) => onProjectSelect(row.key, e.target.value)}
+                  >
+                    <option value="">-- Chọn dự án --</option>
+                    <option value="DA-001">Nhà máy sản xuất linh kiện điện tử</option>
+                    <option value="DA-002">Nhà máy lắp ráp ô tô</option>
+                    <option value="DA-003">Trung tâm R&D chip bán dẫn</option>
+                  </select>
                 )}
               </td>
               <td className={tdCls}>
@@ -203,9 +217,10 @@ function BIV4Table({
                   <span>{row.doiTac}</span>
                 ) : (
                   <input
-                    className={inputCls}
+                    className={fieldInputCls}
                     placeholder="Đối tác"
                     value={row.doiTac}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'doiTac', e.target.value)}
                   />
                 )}
@@ -215,9 +230,10 @@ function BIV4Table({
                   <span>{row.diaDiemDuAn}</span>
                 ) : (
                   <input
-                    className={inputCls}
+                    className={fieldInputCls}
                     placeholder="Địa điểm"
                     value={row.diaDiemDuAn}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'diaDiemDuAn', e.target.value)}
                   />
                 )}
@@ -227,9 +243,10 @@ function BIV4Table({
                   <span>{row.nganhLinhVuc}</span>
                 ) : (
                   <input
-                    className={inputCls}
+                    className={fieldInputCls}
                     placeholder="Ngành"
                     value={row.nganhLinhVuc}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'nganhLinhVuc', e.target.value)}
                   />
                 )}
@@ -239,9 +256,10 @@ function BIV4Table({
                   <span>{row.quyMoCongSuat}</span>
                 ) : (
                   <input
-                    className={inputCls}
+                    className={fieldInputCls}
                     placeholder="Quy mô"
                     value={row.quyMoCongSuat}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'quyMoCongSuat', e.target.value)}
                   />
                 )}
@@ -252,8 +270,9 @@ function BIV4Table({
                 ) : (
                   <input
                     type="number"
-                    className={numInputCls}
+                    className={rowDisabled ? disabledInputCls + ' text-right' : numInputCls}
                     value={row.tongVonDT}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'tongVonDT', Number(e.target.value))}
                   />
                 )}
@@ -263,9 +282,10 @@ function BIV4Table({
                   <span>{row.tinhHinhTrienKhai}</span>
                 ) : (
                   <textarea
-                    className={inputCls + ' resize-none h-[60px]'}
+                    className={(rowDisabled ? disabledInputCls : inputCls) + ' resize-none h-[60px]'}
                     placeholder="Tình hình thực hiện..."
                     value={row.tinhHinhTrienKhai}
+                    readOnly={rowDisabled}
                     onChange={(e) => onRowChange(row.key, 'tinhHinhTrienKhai', e.target.value)}
                   />
                 )}
@@ -284,7 +304,8 @@ function BIV4Table({
                 </td>
               )}
             </tr>
-          ))}
+            );
+          })}
           {/* TỔNG SỐ row */}
           <tr className="bg-[#f3f4f6]">
             <td className={tdCls + ' font-semibold text-center'} colSpan={6}>TỔNG SỐ</td>
@@ -465,6 +486,7 @@ function Tab3CamKetDauTu({
   onRowChange,
   onAddRow,
   onDeleteRow,
+  onProjectSelect,
 }: {
   isView: boolean;
   rows: BIV4Row[];
@@ -475,6 +497,7 @@ function Tab3CamKetDauTu({
   onRowChange: (key: string, field: keyof BIV4Row, value: string | number) => void;
   onAddRow: () => void;
   onDeleteRow: (key: string) => void;
+  onProjectSelect: (key: string, projectCode: string) => void;
 }) {
   const roFieldCls = isView ? 'bg-[#f9fafb]' : '';
 
@@ -549,6 +572,7 @@ function Tab3CamKetDauTu({
           isView={isView}
           onRowChange={onRowChange}
           onDeleteRow={onDeleteRow}
+          onProjectSelect={onProjectSelect}
         />
       </Card>
     </>
@@ -716,6 +740,17 @@ export default function ReportCommitmentForm({ mode = 'create' }: ReportCommitme
     setBiv4Rows((prev) => prev.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
   }
 
+  function handleBIV4ProjectSelect(key: string, projectCode: string) {
+    setBiv4Rows((prev) => prev.map((r) => {
+      if (r.key !== key) return r;
+      const data = biv4ProjectDb[projectCode];
+      if (data) {
+        return { ...r, ...data };
+      }
+      return { ...r, tenDuAn: '', doiTac: '', diaDiemDuAn: '', nganhLinhVuc: '', quyMoCongSuat: '', tongVonDT: 0, tinhHinhTrienKhai: '' };
+    }));
+  }
+
   // A.IV.4 handlers
   function handleAddAIV4Row() {
     setAiv4Rows((prev) => [
@@ -823,6 +858,7 @@ export default function ReportCommitmentForm({ mode = 'create' }: ReportCommitme
           onRowChange={handleBIV4RowChange}
           onAddRow={handleAddBIV4Row}
           onDeleteRow={handleDeleteBIV4Row}
+          onProjectSelect={handleBIV4ProjectSelect}
         />
       )}
       {activeTab === 'tab4' && (
@@ -858,10 +894,11 @@ export default function ReportCommitmentForm({ mode = 'create' }: ReportCommitme
             <Button variant="secondary" onClick={handleSaveDraft}>
               Lưu nháp
             </Button>
-            {/* Gửi báo cáo — primary red, visible on Tab 4 (Figma 2207:2353) and all tabs */}
-            <Button variant="primary" onClick={handleSend}>
-              Gửi báo cáo
-            </Button>
+            {activeTab === 'tab4' && (
+              <Button variant="primary" onClick={handleSend}>
+                Gửi báo cáo
+              </Button>
+            )}
           </>
         )}
         {isView && (

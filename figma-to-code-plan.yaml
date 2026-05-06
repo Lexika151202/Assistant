@@ -99,6 +99,87 @@ phase0:
     typescript: "npx tsc --noEmit → 0 errors"
 
 features:
+  "2":
+    name: "Tổng hợp báo cáo theo phân hệ"
+    spec_source: figma
+    figma_section: "3876:996"
+    figma_section_name: "Hệ thống Báo cáo Đầu tư — TỔNG HỢP BÁO CÁO THEO PHÂN HỆ"
+    figma_shared_nodes: []
+    status: done
+    screens:
+      "report_list_by_module":
+        name: "ReportListByModule"
+        status: scanned
+        tall_screen: false
+        screen_height: 2180
+        figma_nodes:
+          - "3876:996"
+        figma_sub_nodes:
+          - nodeId: "3876:997"
+            name: "DashboardLayout"
+            height: 2180
+          - nodeId: "3876:1721"
+            name: "Sidebar"
+            height: 2180
+          - nodeId: "3876:1081"
+            name: "Main Content"
+            height: 2180
+          - nodeId: "3876:1082"
+            name: "ReportListByModule (Content Area)"
+            height: 2116
+        content_map:
+          section_titles:
+            - "TỔNG HỢP BÁO CÁO THEO PHÂN HỆ"
+            - "Xúc tiến đầu tư"
+            - "Đầu tư tại Việt Nam"
+            - "Đầu tư trong nước"
+            - "Đầu tư ra nước ngoài"
+            - "Khu kinh tế - Khu công nghiệp"
+          field_labels:
+            - "Tìm kiếm theo tên báo cáo"
+          column_headers: []
+          button_text:
+            - "Phân hệ báo cáo"
+          status_labels: []
+          other_text:
+            - "Báo cáo kết quả thực hiện chương trình xúc tiến đầu tư của Bộ/ Ủy ban nhân dân cấp tỉnh"
+            - "Biểu tổng hợp tình hình thực hiện chương trình xúc tiến đầu tư"
+            - "Báo cáo tình hình thực hiện các cam kết/thỏa thuận hợp tác đầu tư/chủ trương đầu tư"
+            - "Báo cáo trước khi thực hiện dự án đầu tư"
+            - "Báo cáo tình hình thực hiện dự án đầu tư quý"
+            - "Báo cáo tổng hợp tình hình đầu tư nước ngoài tại Việt Nam"
+            - "Báo cáo đánh giá hiệu quả hoạt động dự án FDI"
+            - "Báo cáo tình hình thực hiện dự án đầu tư năm"
+            - "Báo cáo kế hoạch đầu tư công trung hạn"
+            - "Báo cáo giải ngân vốn đầu tư công"
+            - "Báo cáo định kỳ 6 tháng tình hình hoạt động dự án đầu tư tại nước ngoài"
+            - "Báo cáo tình hình hoạt động đầu tư ra nước ngoài cho năm tài chính"
+            - "Báo cáo về việc cho tổ chức kinh tế ở nước ngoài vay vốn hoặc nhận vốn vay nước ngoài"
+            - "Báo cáo đánh giá hiệu quả đầu tư ra nước ngoài"
+            - "Tình hình thu hút đầu tư vào khu công nghiệp"
+            - "Báo cáo tổng hợp tình hình phát triển KKT-KCN"
+            - "Báo cáo hiệu quả kinh tế - xã hội của KKT-KCN"
+            - "Kỳ báo cáo: Năm"
+            - "Kỳ báo cáo: Quý"
+            - "Kỳ báo cáo: 6 Tháng"
+            - "PROM"
+            - "FDI"
+            - "DDI"
+            - "ODI"
+            - "EZ"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Danh sách báo cáo"
+            - "Báo cáo đã gửi"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
+        handles_functions:
+          - "1: Xem danh sách báo cáo theo phân hệ + Tìm kiếm + Lọc"
+        status: done
+        file_path: "app/src/pages/feature2/ReportListByModule.tsx"
+
   "3":
     name: "BC kết quả thực hiện chương trình xúc tiến ĐT của Bộ/UBND cấp tỉnh"
     spec_source: figma

@@ -351,8 +351,8 @@ export default function ReportXTDTList() {
 
             {/* Expanded content — sub-table of files */}
             {!group.collapsed && (
-              <div className="border-b border-[rgba(0,0,0,0.1)] bg-[#f9fafb]">
-                <div className="border-l-4 border-[#a50000] ml-6 mr-6 my-4 bg-white border border-[#e5e7eb] rounded-[8px] overflow-hidden">
+              <div className="border-b border-[rgba(0,0,0,0.1)] bg-[#f9fafb] border-l-4 border-l-[#a50000] pl-[52px] pr-[24px] pt-[16px] pb-[16px]">
+                <div className="bg-white border border-[#e5e7eb] rounded-[8px] overflow-hidden">
                   {group.files.length === 0 ? (
                     /* Empty state */
                     <div className="py-8 text-center">

@@ -248,14 +248,15 @@ export default function ReportKKTList() {
   return (
     <Container>
           {/* Page Title */}
-          <div className="mb-4">
-            <h1 className="font-semibold text-[24px] leading-[36px] text-[#101828]">
+          <div className="mb-6">
+            <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase">
               Tình hình thu hút dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng trong khu kinh tế
             </h1>
           </div>
 
           {/* Filter bar */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[18px] mb-6">
+            <div className="flex items-center gap-4 flex-wrap">
             {/* Search input */}
             <div className="relative w-[448px]">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#717182]">
@@ -319,31 +320,32 @@ export default function ReportKKTList() {
             </div>
           </div>
 
-          {/* Quarter Groups */}
-          <div className="flex flex-col gap-3 mb-4">
+          </div>
+
+          {/* Quarter Groups - Table card */}
+          <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] overflow-hidden">
             {filteredGroups.map((group) => {
               const isExpanded = expandedQuarters.has(group.key);
               return (
                 <div
                   key={group.key}
-                  className="border border-[#e5e7eb] rounded-[10px] overflow-hidden"
+                  className="border-b border-[rgba(0,0,0,0.1)] last:border-0"
                 >
                   {/* Quarter header */}
-                  <div className="bg-[#f9fafb] flex items-center justify-between p-4 h-[76px]">
-                    {/* Left: toggle + quarter info */}
+                  <div className="flex items-center justify-between px-[13px] py-[9px]">
                     <div className="flex items-center gap-3">
                       <button
-                        className="flex items-center justify-center w-10 h-5 rounded-[8px] hover:bg-[#e5e7eb] transition-colors"
+                        className="flex items-center justify-center w-6 h-6 rounded-[8px] hover:bg-[#f3f3f5] transition-colors"
                         onClick={() => toggleQuarter(group.key)}
                         aria-label={isExpanded ? 'Thu gọn' : 'Mở rộng'}
                       >
                         <svg
-                          className={`w-5 h-5 text-[#364153] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                          className={`w-4 h-4 text-[#6b7280] transition-transform ${isExpanded ? 'rotate-90' : ''}`}
                           fill="none"
-                          viewBox="0 0 20 20"
+                          viewBox="0 0 16 16"
                         >
                           <path
-                            d="M5 8l5 5 5-5"
+                            d="M6 4l4 4-4 4"
                             stroke="currentColor"
                             strokeWidth="1.5"
                             strokeLinecap="round"
@@ -352,40 +354,27 @@ export default function ReportKKTList() {
                         </svg>
                       </button>
                       <div>
-                        <p className="text-[#101828] text-[16px] font-semibold leading-[24px]">
+                        <p className="text-[#0a0a0a] text-[16px] font-bold leading-[24px] uppercase">
                           {group.label}
                         </p>
-                        <p className="text-[#6a7282] text-[14px]">{group.dateRange}</p>
+                        <p className="text-[#6a7282] text-[13px]">{group.dateRange}</p>
                       </div>
                     </div>
 
-                    {/* Right: status badge + action buttons */}
                     <div className="flex items-center gap-3">
                       <QuarterStatusBadge status={group.quarterStatus} />
                       {group.quarterStatus !== 'Chưa bắt đầu' && (
                         <>
                           <button
-                            className="flex items-center gap-2 h-8 px-3 bg-white border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] hover:bg-[#f3f3f5] transition-colors"
+                            className="flex items-center gap-2 h-8 px-3 bg-[#a50000] rounded-[8px] text-[14px] font-medium text-white hover:bg-[#c10007] transition-colors"
                             onClick={() => navigate('/feature-52/new')}
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                              <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                            </svg>
                             Lập báo cáo
                           </button>
                           <button
                             className="flex items-center gap-2 h-8 px-3 bg-white border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] hover:bg-[#f3f3f5] transition-colors"
                             onClick={() => alert('Import...')}
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                              <path
-                                d="M2 10v3h12v-3M8 2v8M5 7l3 3 3-3"
-                                stroke="currentColor"
-                                strokeWidth="1.2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
                             Import
                           </button>
                         </>
@@ -393,77 +382,69 @@ export default function ReportKKTList() {
                     </div>
                   </div>
 
-                  {/* Report cards (expanded) */}
+                  {/* Expanded content */}
                   {isExpanded && group.reports.length > 0 && (
-                    <div className="flex flex-col">
-                      {group.reports.map((report, idx) => (
-                        <div
-                          key={report.id}
-                          className={`flex items-center justify-between px-4 py-4 ${
-                            idx < group.reports.length - 1
-                              ? 'border-b border-[#e5e7eb]'
-                              : ''
-                          }`}
-                        >
-                          {/* Report info */}
-                          <div className="flex items-center gap-4">
-                            <span className="text-[14px] font-medium text-[#364153]">
-                              {report.maBaoCao}
-                            </span>
-                            <span className="text-[14px] text-[#6a7282]">{report.capNhat}</span>
-                            <ReportStatusBadge status={report.trangThai} />
-                          </div>
+                    <div className="bg-[#f9fafb] border-l-4 border-[#a50000] pl-[52px] pr-[24px] pt-[16px] pb-[16px]">
+                      <div className="flex flex-col gap-3">
+                        {group.reports.map((report) => (
+                          <div
+                            key={report.id}
+                            className="flex items-center justify-between bg-white border border-[#e5e7eb] rounded-[8px] px-4 py-3"
+                          >
+                            <div className="flex items-center gap-4">
+                              <span className="text-[14px] font-medium text-[#364153]">
+                                {report.maBaoCao}
+                              </span>
+                              <span className="text-[14px] text-[#6a7282]">{report.capNhat}</span>
+                              <ReportStatusBadge status={report.trangThai} />
+                            </div>
 
-                          {/* Action dots button */}
-                          <div className="relative">
-                            <button
-                              className="h-8 w-9 flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors"
-                              onClick={() =>
-                                setOpenDropdownId(
-                                  openDropdownId === report.id ? null : report.id
-                                )
-                              }
-                              title="Thao tác"
-                            >
-                              <svg className="w-4 h-4 text-[#364153]" fill="currentColor" viewBox="0 0 16 16">
-                                <circle cx="8" cy="3" r="1.2" />
-                                <circle cx="8" cy="8" r="1.2" />
-                                <circle cx="8" cy="13" r="1.2" />
-                              </svg>
-                            </button>
-                            {openDropdownId === report.id && (
-                              <ActionDropdown
-                                reportId={report.id}
-                                onClose={() => setOpenDropdownId(null)}
-                              />
-                            )}
+                            <div className="relative">
+                              <button
+                                className="h-8 w-9 flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors"
+                                onClick={() =>
+                                  setOpenDropdownId(
+                                    openDropdownId === report.id ? null : report.id
+                                  )
+                                }
+                                title="Thao tác"
+                              >
+                                <svg className="w-4 h-4 text-[#364153]" fill="currentColor" viewBox="0 0 16 16">
+                                  <circle cx="8" cy="3" r="1.2" />
+                                  <circle cx="8" cy="8" r="1.2" />
+                                  <circle cx="8" cy="13" r="1.2" />
+                                </svg>
+                              </button>
+                              {openDropdownId === report.id && (
+                                <ActionDropdown
+                                  reportId={report.id}
+                                  onClose={() => setOpenDropdownId(null)}
+                                />
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   )}
 
-                  {/* Empty state for expanded quarter with no reports */}
+                  {/* Empty state */}
                   {isExpanded && group.reports.length === 0 && (
-                    <div className="px-4 py-6 text-center text-[14px] text-[#6a7282] italic">
+                    <div className="bg-[#f9fafb] border-l-4 border-[#a50000] pl-[52px] pr-[24px] py-6 text-center text-[14px] text-[#6a7282] italic">
                       Chưa có báo cáo nào trong kỳ này.
                     </div>
                   )}
                 </div>
               );
             })}
-          </div>
 
-          {/* Pagination footer */}
-          <div className="flex items-center justify-between py-2">
-            {/* Left: info + rows per page */}
-            <div className="flex items-center gap-4 text-[14px] text-[#6a7282]">
-              <span>Hiển thị 1-10 bản ghi</span>
-              <div className="flex items-center gap-2">
-                <span>Số dòng mỗi trang:</span>
+            {/* Pagination footer */}
+            <div className="border-t border-[rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-[17px]">
+              <div className="flex items-center gap-2 text-[14px] text-[#4a5565]">
+                <span>Hiển thị</span>
                 <div className="relative">
                   <select
-                    className="h-[36px] pl-3 pr-6 bg-[#f3f3f5] rounded-[8px] text-[14px] font-medium text-[#6a7282] outline-none appearance-none cursor-pointer"
+                    className="h-9 pl-3 pr-7 bg-[#f3f3f5] border border-transparent rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
                     defaultValue={10}
                   >
                     <option value={10}>10</option>
@@ -471,53 +452,53 @@ export default function ReportKKTList() {
                     <option value={50}>50</option>
                   </select>
                   <svg
-                    className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a7282]"
+                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0a0a0a]"
                     fill="none"
                     viewBox="0 0 16 16"
                   >
                     <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
+                <span>/ trang</span>
               </div>
-            </div>
 
-            {/* Right: pagination controls */}
-            <div className="flex items-center gap-1">
-              <button
-                className="h-[36px] px-3 flex items-center gap-1 text-[14px] font-medium text-[#0a0a0a] rounded-[8px] opacity-50 hover:opacity-100 hover:bg-[#f3f3f5] transition-all disabled:cursor-not-allowed"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                  <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Previous
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <div className="flex items-center gap-1">
                 <button
-                  key={page}
-                  className={`w-[36px] h-[36px] flex items-center justify-center text-[14px] font-medium rounded-[8px] transition-colors ${
-                    page === currentPage
-                      ? 'bg-white border border-[rgba(0,0,0,0.1)] text-[#0a0a0a]'
-                      : 'text-[#0a0a0a] hover:bg-[#f3f3f5]'
-                  }`}
-                  onClick={() => setCurrentPage(page)}
+                  className="h-[36px] px-3 flex items-center gap-1 text-[14px] font-medium text-[#0a0a0a] rounded-[8px] opacity-50 hover:opacity-100 hover:bg-[#f3f3f5] transition-all disabled:cursor-not-allowed"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
                 >
-                  {page}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
+                    <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Previous
                 </button>
-              ))}
 
-              <button
-                className="h-[36px] px-3 flex items-center gap-1 text-[14px] font-medium text-[#0a0a0a] rounded-[8px] opacity-50 hover:opacity-100 hover:bg-[#f3f3f5] transition-all disabled:cursor-not-allowed"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-              >
-                Next
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                  <path d="M6 12l4-4-4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`w-[36px] h-[36px] flex items-center justify-center text-[14px] font-medium rounded-[8px] transition-colors ${
+                      page === currentPage
+                        ? 'bg-white border border-[rgba(0,0,0,0.1)] text-[#0a0a0a]'
+                        : 'text-[#0a0a0a] hover:bg-[#f3f3f5]'
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  className="h-[36px] px-3 flex items-center gap-1 text-[14px] font-medium text-[#0a0a0a] rounded-[8px] opacity-50 hover:opacity-100 hover:bg-[#f3f3f5] transition-all disabled:cursor-not-allowed"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
+                    <path d="M6 12l4-4-4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
     </Container>

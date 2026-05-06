@@ -9,5 +9,5 @@ export { Heading, Paragraph } from './Heading';
 export { Table, THead, TBody, TR, TH, TD } from './Table';
 export { Badge } from './Badge';
 export { Sidebar } from './Sidebar';
-export type { SidebarItem } from './Sidebar';
+export type { SidebarItem, SidebarGroup } from './Sidebar';
 export { Header } from './Header';

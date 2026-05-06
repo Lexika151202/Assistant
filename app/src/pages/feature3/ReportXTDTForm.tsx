@@ -139,9 +139,39 @@ function Tab2BieuTongHop({ isView }: { isView: boolean }) {
   );
 }
 
+const tab3ProjectDb: Record<string, { doiTac: string; diaDiem: string; nganh: string; quyMo: string; tongVon: string; tinhHinh: string }> = {
+  'DA-001': { doiTac: 'Tập đoàn Samsung', diaDiem: 'KCN Bắc Ninh', nganh: 'Công nghệ cao', quyMo: '500 lao động', tongVon: '150,000', tinhHinh: 'Đang triển khai' },
+  'DA-002': { doiTac: 'Toyota Motor Corp.', diaDiem: 'KCN Vĩnh Phúc', nganh: 'Sản xuất ô tô', quyMo: '800 lao động', tongVon: '250,000', tinhHinh: 'Hoàn thành giai đoạn 1' },
+  'DA-003': { doiTac: 'Intel Corporation', diaDiem: 'TP. Hồ Chí Minh', nganh: 'Công nghệ thông tin', quyMo: '300 lao động', tongVon: '400,000', tinhHinh: 'Đang xây dựng' },
+};
+
 function Tab3CamKetDauTu({ isView }: { isView: boolean }) {
   const cols = ['STT', 'Tên dự án', 'Đối tác', 'Địa điểm dự án', 'Ngành/Lĩnh vực',
     'Quy mô, công suất', 'Tổng vốn ĐT (triệu đồng)', 'Tình hình triển khai', 'Hành động'];
+
+  const [selectedProject, setSelectedProject] = useState('');
+  const [doiTac, setDoiTac] = useState('');
+  const [diaDiem, setDiaDiem] = useState('');
+  const [nganh, setNganh] = useState('');
+  const [quyMo, setQuyMo] = useState('');
+  const [tongVon, setTongVon] = useState('');
+  const [tinhHinh, setTinhHinh] = useState('');
+
+  const rowFieldsDisabled = isView || !selectedProject;
+  const roFieldCls = rowFieldsDisabled ? 'bg-[#f9fafb]' : '';
+
+  function handleProjectSelect(code: string) {
+    setSelectedProject(code);
+    const data = tab3ProjectDb[code];
+    if (data) {
+      setDoiTac(data.doiTac); setDiaDiem(data.diaDiem); setNganh(data.nganh);
+      setQuyMo(data.quyMo); setTongVon(data.tongVon); setTinhHinh(data.tinhHinh);
+    } else {
+      setDoiTac(''); setDiaDiem(''); setNganh('');
+      setQuyMo(''); setTongVon(''); setTinhHinh('');
+    }
+  }
+
   return (
     <>
       <div className="mb-4">
@@ -176,18 +206,33 @@ function Tab3CamKetDauTu({ isView }: { isView: boolean }) {
             <tbody>
               <tr className="border-t border-[#e5e7eb] hover:bg-[#f9fafb]">
                 <td className={`${tdCls} text-center`}>1</td>
-                <td className={tdCls}><Input placeholder="Chọn dự án" /></td>
-                <td className={tdCls}><Input placeholder="Đối tác" /></td>
-                <td className={tdCls}><Input placeholder="Địa điểm" /></td>
-                <td className={tdCls}><Input placeholder="Ngành" /></td>
-                <td className={tdCls}><Input placeholder="Quy mô" /></td>
-                <td className={tdCls}><Input placeholder="0" /></td>
-                <td className={tdCls}><Input placeholder="Tình hình thực hiện..." /></td>
+                <td className={tdCls}>
+                  {isView ? (
+                    <Input value={selectedProject} readOnly className="bg-[#f9fafb]" />
+                  ) : (
+                    <select
+                      className="w-full h-10 px-3 bg-white border border-[#e5e7eb] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none"
+                      value={selectedProject}
+                      onChange={(e) => handleProjectSelect(e.target.value)}
+                    >
+                      <option value="">-- Chọn dự án --</option>
+                      <option value="DA-001">Nhà máy sản xuất linh kiện điện tử</option>
+                      <option value="DA-002">Nhà máy lắp ráp ô tô</option>
+                      <option value="DA-003">Trung tâm R&D chip bán dẫn</option>
+                    </select>
+                  )}
+                </td>
+                <td className={tdCls}><Input placeholder="Đối tác" value={doiTac} onChange={(e) => setDoiTac(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
+                <td className={tdCls}><Input placeholder="Địa điểm" value={diaDiem} onChange={(e) => setDiaDiem(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
+                <td className={tdCls}><Input placeholder="Ngành" value={nganh} onChange={(e) => setNganh(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
+                <td className={tdCls}><Input placeholder="Quy mô" value={quyMo} onChange={(e) => setQuyMo(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
+                <td className={tdCls}><Input placeholder="0" value={tongVon} onChange={(e) => setTongVon(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
+                <td className={tdCls}><Input placeholder="Tình hình thực hiện..." value={tinhHinh} onChange={(e) => setTinhHinh(e.target.value)} readOnly={rowFieldsDisabled} className={roFieldCls} /></td>
                 <td className={tdCls}><Button variant="ghost" size="sm">Xóa</Button></td>
               </tr>
               <tr className="border-t border-[#e5e7eb] bg-[#f9fafb] font-semibold">
                 <td colSpan={6} className={`${tdCls} text-right`}>TỔNG SỐ</td>
-                <td className={tdCls}>0</td><td className={tdCls} /><td className={tdCls} />
+                <td className={tdCls}>{tongVon || '0'}</td><td className={tdCls} /><td className={tdCls} />
               </tr>
             </tbody>
           </table>
@@ -322,7 +367,7 @@ export default function ReportXTDTForm({ mode = 'create' }: ReportXTDTFormProps)
     { key: 'tab4', label: 'Tab 4: Dự án ĐTNN' },
   ];
 
-  const showSubmit = activeTab === 'tab3' || activeTab === 'tab4';
+  const showSubmit = activeTab === 'tab4';
 
   return (
     <Container>

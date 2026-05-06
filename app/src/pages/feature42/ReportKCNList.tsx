@@ -130,31 +130,20 @@ export default function ReportKCNList() {
   return (
     <Container>
       {/* Page heading */}
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="font-semibold text-[24px] leading-[36px] text-[#101828]">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase">
           Tình hình thu hút đầu tư vào khu công nghiệp
         </h1>
       </div>
 
       {/* Filter bar */}
-      <div className="flex items-center gap-3 mb-4">
-        {/* Filter icon + label */}
-        <div className="flex items-center gap-2">
-          <svg className="w-5 h-5 text-[#364153]" fill="none" viewBox="0 0 20 20">
-            <path
-              d="M3 5h14M6 10h8M9 15h2"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className="text-[14px] font-medium text-[#364153]">Bộ lọc:</span>
-        </div>
+      <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[18px] mb-6">
+        <div className="flex items-center gap-4 flex-wrap">
 
         {/* Nhóm báo cáo dropdown */}
         <div className="relative">
           <select
-            className="h-[36px] pl-3 pr-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
+            className="h-[37px] pl-3 pr-8 bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
             value={nhomFilter}
             onChange={(e) => setNhomFilter(e.target.value as NhomBaoCao | '')}
           >
@@ -180,7 +169,7 @@ export default function ReportKCNList() {
         {/* Trạng thái dropdown */}
         <div className="relative">
           <select
-            className="h-[36px] pl-3 pr-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
+            className="h-[37px] pl-3 pr-8 bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as KCNStatus | '')}
           >
@@ -207,7 +196,7 @@ export default function ReportKCNList() {
         {/* Kỳ báo cáo dropdown */}
         <div className="relative">
           <select
-            className="h-[36px] pl-3 pr-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
+            className="h-[37px] pl-3 pr-8 bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
             value={kyFilter}
             onChange={(e) => setKyFilter(e.target.value as KyBaoCao | '')}
           >
@@ -232,14 +221,15 @@ export default function ReportKCNList() {
           </svg>
         </div>
       </div>
+      </div>
 
       {/* Table container */}
-      <div className="border border-[#e5e7eb] rounded-[10px] overflow-hidden">
+      <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1200px]">
             {/* Header */}
             <thead>
-              <tr className="bg-[#f9fafb] border-b border-[rgba(0,0,0,0.1)]">
+              <tr className="border-b border-[rgba(0,0,0,0.1)]">
                 <th className="pl-2 pr-1 py-[10px] w-[32px]">
                   <div className="w-4 h-4 bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[4px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]" />
                 </th>
@@ -374,37 +364,34 @@ export default function ReportKCNList() {
         </div>
 
         {/* Pagination footer */}
-        <div className="border-t border-[rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-[10px]">
-          {/* Left: records info + items per page + selected */}
-          <div className="flex items-center gap-4 text-[14px] text-[#6a7282]">
-            <span>Hiển thị 1-10 bản ghi</span>
-            <div className="flex items-center gap-2">
-              <span>Số dòng mỗi trang:</span>
-              <div className="relative">
-                <select
-                  className="h-[36px] pl-3 pr-7 bg-[#f3f3f5] border border-transparent rounded-[8px] text-[14px] font-medium text-[#6a7282] outline-none appearance-none cursor-pointer"
-                  defaultValue={10}
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                </select>
-                <svg
-                  className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a7282]"
-                  fill="none"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M4 6l4 4 4-4"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
+        <div className="border-t border-[rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-[17px]">
+          {/* Left: items per page */}
+          <div className="flex items-center gap-2 text-[14px] text-[#4a5565]">
+            <span>Hiển thị</span>
+            <div className="relative">
+              <select
+                className="h-9 pl-3 pr-7 bg-[#f3f3f5] border border-transparent rounded-[8px] text-[14px] font-medium text-[#0a0a0a] outline-none appearance-none cursor-pointer"
+                defaultValue={10}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+              <svg
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0a0a0a]"
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M4 6l4 4 4-4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
-            <span>{selectedRows.size} được chọn</span>
+            <span>/ trang</span>
           </div>
 
           {/* Right: pagination controls */}

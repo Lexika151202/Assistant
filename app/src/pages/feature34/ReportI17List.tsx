@@ -172,42 +172,11 @@ export default function ReportI17List() {
 
   return (
     <Container>
-      {/* Breadcrumb */}
-      <nav className="text-[13px] text-[#4a5565] mb-4 flex items-center gap-1">
-        <span
-          className="cursor-pointer hover:text-[#a50000]"
-          onClick={() => navigate('/')}
-        >
-          Trang chủ
-        </span>
-        <span>/</span>
-        <span>Báo cáo định kỳ</span>
-        <span>/</span>
-        <span className="text-[#0a0a0a]">Mẫu I.17</span>
-      </nav>
-
-      {/* Page heading + action buttons */}
-      <div className="flex flex-col gap-4 mb-6">
-        {/* Title row */}
-        <h1 className="font-bold text-[24px] leading-[32px] text-[#101828]">
+      {/* Page heading */}
+      <div className="mb-6">
+        <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase">
           BÁO CÁO TÌNH HÌNH HOẠT ĐỘNG ĐẦU TƯ RA NƯỚC NGOÀI CHO NĂM TÀI CHÍNH
         </h1>
-
-        {/* Buttons row — matches Figma: Lập báo cáo mới (red filled) + Import báo cáo (white/red border) */}
-        <div className="flex items-center gap-3">
-          <Button
-            variant="primary"
-            onClick={() => navigate('/feature-34/new')}
-          >
-            Lập báo cáo mới
-          </Button>
-          <button
-            onClick={() => alert('Import báo cáo')}
-            className="inline-flex items-center justify-center h-10 px-4 text-[14px] font-medium rounded-[8px] bg-white text-[#a50000] border border-[#a50000] hover:bg-[#fef2f2] transition-colors"
-          >
-            Import báo cáo
-          </button>
-        </div>
       </div>
 
       {/* Filter bar — search + Trạng thái select */}

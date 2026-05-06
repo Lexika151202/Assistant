@@ -1,14 +1,10 @@
-// Feature: 33 - Báo cáo định kỳ 6 tháng tình hình hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)
+// Feature: 33 - Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)
 // Screen: List view — Cấu trúc theo NĂM (timeline state)
 // Figma Node: 2360:996
 
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
-import { Heading } from '../../components/shared/Heading';
-import { Button } from '../../components/shared/Button';
-import { Badge } from '../../components/shared/Badge';
-import { Input } from '../../components/shared/Input';
 
 type YearState = 'future' | 'inDeadline' | 'overdue' | 'closed';
 type ReportStatus = 'Lưu nháp' | 'Đã nộp' | 'Yêu cầu chỉnh sửa';
@@ -50,37 +46,46 @@ const mockData: YearBlock[] = [
   { year: 2023, state: 'closed', reports: [] },
 ];
 
-const stateMeta: Record<YearState, { label: string; tone: 'neutral' | 'info' | 'warning' | 'danger' }> = {
-  future: { label: 'Chưa tới hạn nộp báo cáo', tone: 'info' },
-  inDeadline: { label: 'Trong thời hạn nộp báo cáo', tone: 'warning' },
-  overdue: { label: 'Qua hạn nộp báo cáo', tone: 'warning' },
-  closed: { label: 'Qua hạn nộp báo cáo', tone: 'warning' },
+const stateMeta: Record<YearState, { label: string; badgeBg: string; badgeText: string }> = {
+  future: { label: 'Chưa tới hạn nộp báo cáo', badgeBg: '#dbeafe', badgeText: '#1447e6' },
+  inDeadline: { label: 'Trong thời hạn nộp báo cáo', badgeBg: '#dcfce7', badgeText: '#008236' },
+  overdue: { label: 'Qua hạn nộp báo cáo', badgeBg: '#fef9c2', badgeText: '#a65f00' },
+  closed: { label: 'Qua hạn nộp báo cáo', badgeBg: '#fef9c2', badgeText: '#a65f00' },
 };
 
 function statusBadge(status: ReportStatus) {
-  if (status === 'Đã nộp') return <Badge tone="success">Đã nộp</Badge>;
-  if (status === 'Lưu nháp') return <Badge tone="warning">Lưu nháp</Badge>;
-  return <Badge tone="warning">Yêu cầu chỉnh sửa</Badge>;
+  if (status === 'Đã nộp') return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-[#dcfce7] text-[#008236]">Đã nộp</span>;
+  if (status === 'Lưu nháp') return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-[#e5e7eb] text-[#364153]">Lưu nháp</span>;
+  return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-[#fef9c2] text-[#a65f00]">Yêu cầu chỉnh sửa</span>;
 }
 
-// --- Action button variants matching figma (red filled vs ghost links) ---
 function ActionRedFilled({ icon, children, onClick }: { icon: string; children: React.ReactNode; onClick?: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="inline-flex items-center gap-1 h-8 px-3 bg-[#a50000] text-white text-[12px] font-medium rounded-[4px] hover:bg-[#c10007] whitespace-nowrap"
+      className="inline-flex items-center gap-1 h-8 px-3 bg-[#a50000] text-white text-[14px] font-medium rounded-[8px] hover:bg-[#c10007] whitespace-nowrap"
     >
       <span aria-hidden>{icon}</span>{children}
     </button>
   );
 }
 
-function ActionLink({ icon, children, onClick, color = '#364153' }: { icon: string; children: React.ReactNode; onClick?: () => void; color?: string }) {
+function ActionGhost({ icon, children, onClick }: { icon: string; children: React.ReactNode; onClick?: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="inline-flex items-center gap-1 h-8 px-2 text-[12px] hover:bg-[#f3f3f5] rounded-[4px] whitespace-nowrap"
-      style={{ color }}
+      className="inline-flex items-center gap-1 h-8 px-2 text-[#0a0a0a] text-[14px] font-medium rounded-[8px] hover:bg-[#f3f3f5] whitespace-nowrap"
+    >
+      <span aria-hidden>{icon}</span>{children}
+    </button>
+  );
+}
+
+function ActionDelete({ icon, children, onClick }: { icon: string; children: React.ReactNode; onClick?: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="inline-flex items-center gap-1 h-8 px-2 text-[#e7000b] text-[14px] font-medium rounded-[8px] hover:bg-[#f3f3f5] whitespace-nowrap"
     >
       <span aria-hidden>{icon}</span>{children}
     </button>
@@ -92,10 +97,10 @@ function rowActions(row: ReportRow, state: YearState, navigate: (to: string) => 
 
   // Đã nộp → Xem chi tiết / Vòng đời / In / Export
   if (row.status === 'Đã nộp') {
-    actions.push(<ActionLink key="view" icon="👁" onClick={() => navigate(`/feature-33/${row.id}/view`)}>Xem chi tiết</ActionLink>);
-    actions.push(<ActionLink key="life" icon="🕒" onClick={() => alert('Mở dialog Vòng đời')}>Vòng đời</ActionLink>);
-    actions.push(<ActionLink key="print" icon="🖨" onClick={() => window.print()}>In</ActionLink>);
-    actions.push(<ActionLink key="export" icon="↓">Export</ActionLink>);
+    actions.push(<ActionGhost key="view" icon="👁" onClick={() => navigate(`/feature-33/${row.id}/view`)}>Xem chi tiết</ActionGhost>);
+    actions.push(<ActionGhost key="life" icon="🕒" onClick={() => alert('Mở dialog Vòng đời')}>Vòng đời</ActionGhost>);
+    actions.push(<ActionGhost key="print" icon="🖨" onClick={() => window.print()}>In</ActionGhost>);
+    actions.push(<ActionGhost key="export" icon="↓">Export</ActionGhost>);
     return actions;
   }
 
@@ -104,51 +109,21 @@ function rowActions(row: ReportRow, state: YearState, navigate: (to: string) => 
     actions.push(<ActionRedFilled key="submit" icon="✈" onClick={() => alert(`Nộp ${row.code}?`)}>Nộp</ActionRedFilled>);
     actions.push(<ActionRedFilled key="edit" icon="✎" onClick={() => navigate(`/feature-33/${row.id}/edit`)}>Chỉnh sửa</ActionRedFilled>);
   }
-  actions.push(<ActionLink key="view" icon="👁" onClick={() => navigate(`/feature-33/${row.id}/view`)}>Xem chi tiết</ActionLink>);
-  actions.push(<ActionLink key="life" icon="🕒" onClick={() => alert('Mở dialog Vòng đời')}>Xem vòng đời</ActionLink>);
-  actions.push(<ActionLink key="print" icon="🖨" onClick={() => window.print()}>In</ActionLink>);
-  actions.push(<ActionLink key="export" icon="↓">Export</ActionLink>);
+  actions.push(<ActionGhost key="view" icon="👁" onClick={() => navigate(`/feature-33/${row.id}/view`)}>Xem chi tiết</ActionGhost>);
+  actions.push(<ActionGhost key="life" icon="🕒" onClick={() => alert('Mở dialog Vòng đời')}>Xem vòng đời</ActionGhost>);
+  actions.push(<ActionGhost key="print" icon="🖨" onClick={() => window.print()}>In</ActionGhost>);
+  actions.push(<ActionGhost key="export" icon="↓">Export</ActionGhost>);
   if (row.status === 'Lưu nháp' && state !== 'closed') {
-    actions.push(<ActionLink key="del" icon="🗑" color="#c10007" onClick={() => confirm(`Xóa ${row.code}?`)}>Xóa</ActionLink>);
+    actions.push(<ActionDelete key="del" icon="🗑" onClick={() => confirm(`Xóa ${row.code}?`)}>Xóa</ActionDelete>);
   }
   return actions;
 }
 
-function YearSectionHeader({
-  year, state, expanded, onToggle, onCreate, onImport,
-}: {
-  year: number; state: YearState; expanded: boolean; onToggle: () => void;
-  onCreate?: () => void; onImport?: () => void;
-}) {
-  const m = stateMeta[state];
-  return (
-    <div className="flex items-center justify-between px-4 py-3 bg-[#fff7ed] border-b border-[#ffd6a8]">
-      <div className="flex items-center gap-3">
-        <button onClick={onToggle} className="text-[#0a0a0a] inline-flex items-center gap-2">
-          <span className="text-[12px]">{expanded ? '▼' : '▶'}</span>
-          <span className="text-[14px] font-bold tracking-wide">NĂM {year}</span>
-        </button>
-        {state === 'inDeadline' && onCreate && onImport && (
-          <div className="flex items-center gap-2 ml-2">
-            <button onClick={onCreate} className="inline-flex items-center gap-1 h-8 px-3 bg-[#a50000] text-white text-[12px] font-medium rounded-[4px] hover:bg-[#c10007]">
-              <span>+</span>Lập báo cáo
-            </button>
-            <button onClick={onImport} className="inline-flex items-center gap-1 h-8 px-3 bg-white border border-[#e5e7eb] text-[#364153] text-[12px] font-medium rounded-[4px] hover:bg-[#f9fafb]">
-              <span>↑</span>Import
-            </button>
-          </div>
-        )}
-      </div>
-      <Badge tone={m.tone}>{m.label}</Badge>
-    </div>
-  );
-}
-
 function ReportTable({ reports, state, navigate }: { reports: ReportRow[]; state: YearState; navigate: (to: string) => void }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="bg-white border border-[#e5e7eb] rounded-[8px] overflow-hidden">
       <table className="w-full">
-        <thead className="bg-white border-b border-[#e5e7eb]">
+        <thead className="bg-[#f3f4f6]">
           <tr>
             <th className="px-4 py-3 text-left text-[12px] font-medium text-[#6a7282]">Mã báo cáo</th>
             <th className="px-4 py-3 text-left text-[12px] font-medium text-[#6a7282]">Tên dự án</th>
@@ -159,7 +134,7 @@ function ReportTable({ reports, state, navigate }: { reports: ReportRow[]; state
         </thead>
         <tbody>
           {reports.map((r) => (
-            <tr key={r.id} className="border-b border-[#e5e7eb] last:border-0 hover:bg-[#f9fafb]">
+            <tr key={r.id} className="border-b border-[rgba(0,0,0,0.1)] last:border-0 hover:bg-[#f9fafb]">
               <td className="px-4 py-3 text-[13px] text-[#0a0a0a] whitespace-nowrap">{r.code}</td>
               <td className="px-4 py-3 text-[13px] text-[#0a0a0a]">{r.projectName}</td>
               <td className="px-4 py-3 text-[13px] text-[#6a7282] whitespace-nowrap">{r.updatedAt}</td>
@@ -180,42 +155,16 @@ function ReportTable({ reports, state, navigate }: { reports: ReportRow[]; state
 function EmptyMessage({ state }: { state: YearState }) {
   if (state === 'future' || state === 'inDeadline') {
     return (
-      <div className="px-6 py-10 text-center text-[14px] text-[#6a7282]">
+      <div className="bg-white border border-[#e5e7eb] rounded-[8px] px-6 py-10 text-center text-[14px] text-[#6a7282]">
         <div>Kỳ báo cáo này chưa tới hạn</div>
         <div className="mt-1">Vui lòng đợi đến thời hạn để lập báo cáo</div>
       </div>
     );
   }
   return (
-    <div className="px-6 py-10 text-center text-[14px] text-[#6a7282]">
+    <div className="bg-white border border-[#e5e7eb] rounded-[8px] px-6 py-10 text-center text-[14px] text-[#6a7282]">
       <div>Chưa có báo cáo nào cho kỳ này</div>
       <div className="mt-1 italic">Không thể tạo thêm</div>
-    </div>
-  );
-}
-
-function YearCard({
-  block, expanded, onToggle, onCreate, onImport, navigate,
-}: {
-  block: YearBlock; expanded: boolean; onToggle: () => void;
-  onCreate: () => void; onImport: () => void;
-  navigate: (to: string) => void;
-}) {
-  return (
-    <div className="bg-white border border-[#e5e7eb] border-l-4 border-l-[#a50000] rounded-[8px] overflow-hidden">
-      <YearSectionHeader
-        year={block.year}
-        state={block.state}
-        expanded={expanded}
-        onToggle={onToggle}
-        onCreate={block.state === 'inDeadline' ? onCreate : undefined}
-        onImport={block.state === 'inDeadline' ? onImport : undefined}
-      />
-      {expanded && (
-        block.reports.length > 0
-          ? <ReportTable reports={block.reports} state={block.state} navigate={navigate} />
-          : <EmptyMessage state={block.state} />
-      )}
     </div>
   );
 }
@@ -245,76 +194,145 @@ export default function ReportI16List() {
   return (
     <Container>
       {/* Page heading */}
-      <Heading level={1} className="!text-[20px] !leading-[28px] !font-bold uppercase tracking-wide mb-5">
-        Báo cáo định kỳ 6 tháng tình hình hoạt động dự án đầu tư tại nước ngoài
-      </Heading>
+      <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase mb-5">
+        Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài
+      </h1>
 
-      {/* Filter bar */}
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="flex-1 min-w-[280px]">
-          <Input
-            placeholder="Tìm kiếm theo mã báo cáo, tên, dự án"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            leftIcon={<span>🔍</span>}
-          />
+      {/* Filter card */}
+      <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[18px] mb-6">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Search input */}
+          <div className="relative flex-1 min-w-[280px]">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a7282]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Tìm kiếm theo mã báo cáo, tên, dự án"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full h-[36px] pl-[40px] pr-3 bg-[#f3f3f5] rounded-[8px] text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] outline-none"
+            />
+          </div>
+          {/* Year dropdown */}
+          <div className="relative">
+            <select
+              className="h-[37px] px-3 pr-8 min-w-[200px] bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none appearance-none"
+              value={yearFilter}
+              onChange={(e) => setYearFilter(e.target.value)}
+            >
+              <option value="">Năm</option>
+              {mockData.map((y) => (
+                <option key={y.year} value={y.year}>Năm {y.year}</option>
+              ))}
+            </select>
+            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a7282] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          {/* Status dropdown */}
+          <div className="relative">
+            <select
+              className="h-[37px] px-3 pr-8 min-w-[220px] bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none appearance-none"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">Trạng thái báo cáo</option>
+              <option value="Lưu nháp">Lưu nháp</option>
+              <option value="Đã nộp">Đã nộp</option>
+              <option value="Yêu cầu chỉnh sửa">Yêu cầu chỉnh sửa</option>
+            </select>
+            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a7282] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
         </div>
-        <select
-          className="h-10 px-3 min-w-[200px] bg-white border border-[#e5e7eb] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none"
-          value={yearFilter}
-          onChange={(e) => setYearFilter(e.target.value)}
-        >
-          <option value="">Năm</option>
-          {mockData.map((y) => (
-            <option key={y.year} value={y.year}>Năm {y.year}</option>
-          ))}
-        </select>
-        <select
-          className="h-10 px-3 min-w-[220px] bg-white border border-[#e5e7eb] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="">Trạng thái báo cáo</option>
-          <option value="Lưu nháp">Lưu nháp</option>
-          <option value="Đã nộp">Đã nộp</option>
-          <option value="Yêu cầu chỉnh sửa">Yêu cầu chỉnh sửa</option>
-        </select>
       </div>
 
-      {/* Section table headers (above year cards) */}
-      <div className="flex items-center justify-between px-4 py-2 mb-1 text-[12px] font-medium text-[#6a7282]">
-        <span>Kỳ hạn báo cáo</span>
-        <span>Trạng thái</span>
-      </div>
-
-      {/* Year list */}
-      <div className="flex flex-col gap-3">
-        {filtered.map((y) => (
-          <YearCard
-            key={y.year}
-            block={y}
-            expanded={!!expanded[y.year]}
-            onToggle={() => setExpanded((s) => ({ ...s, [y.year]: !s[y.year] }))}
-            onCreate={() => navigate('/feature-33/new')}
-            onImport={() => alert('Import từ Excel/Word')}
-            navigate={navigate}
-          />
-        ))}
-      </div>
-
-      {/* Pagination footer */}
-      <div className="flex items-center justify-between mt-6 text-[14px] text-[#4a5565]">
-        <div className="flex items-center gap-2">
-          Hiển thị
-          <select className="h-9 px-2 bg-white border border-[#e5e7eb] rounded-[8px]">
-            <option>10</option><option>20</option><option>50</option>
-          </select>
-          / trang
+      {/* Table card */}
+      <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] overflow-hidden">
+        {/* Table header */}
+        <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.1)] px-[13px] py-[10px]">
+          <span className="text-[12px] font-medium text-[#6a7282]">Kỳ hạn báo cáo</span>
+          <span className="text-[12px] font-medium text-[#6a7282]">Trạng thái</span>
         </div>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline">‹ Previous</Button>
-          <span className="px-3 py-1.5 text-[13px] bg-[#a50000] text-white rounded-[4px]">1</span>
-          <Button size="sm" variant="outline">Next ›</Button>
+
+        {/* Year rows */}
+        {filtered.map((block) => {
+          const meta = stateMeta[block.state];
+          const isExpanded = !!expanded[block.year];
+          return (
+            <div key={block.year}>
+              {/* Period row */}
+              <div className="flex items-center border-b border-[rgba(0,0,0,0.1)] px-[13px] py-[9px]">
+                {/* Chevron button */}
+                <button
+                  onClick={() => setExpanded((s) => ({ ...s, [block.year]: !s[block.year] }))}
+                  className="w-6 h-6 rounded-[8px] inline-flex items-center justify-center hover:bg-[#f3f3f5] mr-2"
+                >
+                  <svg className={`w-4 h-4 text-[#0a0a0a] transition-transform ${isExpanded ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {/* Period text */}
+                <span className="font-bold text-[16px] uppercase text-[#0a0a0a]">NĂM {block.year}</span>
+
+                {/* Action buttons for inDeadline or overdue */}
+                {(block.state === 'inDeadline' || block.state === 'overdue') && (
+                  <div className="flex items-center gap-2 ml-4">
+                    <button
+                      onClick={() => navigate('/feature-33/new')}
+                      className="inline-flex items-center gap-1 h-8 px-3 bg-[#a50000] text-white text-[14px] font-medium rounded-[8px] hover:bg-[#c10007]"
+                    >
+                      <span>+</span>Lập báo cáo
+                    </button>
+                    <button
+                      onClick={() => alert('Import từ Excel/Word')}
+                      className="inline-flex items-center gap-1 h-8 px-3 bg-white border border-[rgba(0,0,0,0.1)] text-[#0a0a0a] text-[14px] font-medium rounded-[8px] hover:bg-[#f9fafb]"
+                    >
+                      <span>↑</span>Import
+                    </button>
+                  </div>
+                )}
+
+                {/* Status badge - far right */}
+                <span
+                  className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium"
+                  style={{ backgroundColor: meta.badgeBg, color: meta.badgeText }}
+                >
+                  {meta.label}
+                </span>
+              </div>
+
+              {/* Expanded content */}
+              {isExpanded && (
+                <div className="bg-[#f9fafb] border-b border-[rgba(0,0,0,0.1)]">
+                  <div className="border-l-4 border-[#a50000] ml-6 pl-[52px] pr-6 pt-4 pb-4">
+                    {block.reports.length > 0
+                      ? <ReportTable reports={block.reports} state={block.state} navigate={navigate} />
+                      : <EmptyMessage state={block.state} />
+                    }
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Pagination footer */}
+        <div className="flex items-center justify-between border-t border-[rgba(0,0,0,0.1)] px-4 py-[17px]">
+          <div className="flex items-center gap-2 text-[14px] text-[#4a5565]">
+            Hiển thị
+            <select className="h-9 px-2 bg-[#f3f3f5] border border-[rgba(0,0,0,0.1)] rounded-[8px] text-[14px]">
+              <option>10</option><option>20</option><option>50</option>
+            </select>
+            / trang
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="h-8 px-3 text-[14px] font-medium text-[#0a0a0a] border border-[rgba(0,0,0,0.1)] rounded-[8px] hover:bg-[#f3f3f5]">Previous</button>
+            <span className="px-3 py-1.5 text-[13px] bg-[#a50000] text-white rounded-[8px]">1</span>
+            <button className="h-8 px-3 text-[14px] font-medium text-[#0a0a0a] border border-[rgba(0,0,0,0.1)] rounded-[8px] hover:bg-[#f3f3f5]">Next</button>
+          </div>
         </div>
       </div>
     </Container>

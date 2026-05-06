@@ -17,6 +17,7 @@ import ReportCommitmentList from './pages/feature5/ReportCommitmentList';
 import ReportCommitmentForm from './pages/feature5/ReportCommitmentForm';
 import ReportFDIProjectList from './pages/feature6/ReportFDIProjectList';
 import ReportFDIProjectForm from './pages/feature6/ReportFDIProjectForm';
+import ReportListByModule from './pages/feature2/ReportListByModule';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -63,6 +64,7 @@ export const router = createBrowserRouter([
       { path: 'feature-6/new', element: <ReportFDIProjectForm mode="create" /> },
       { path: 'feature-6/:id/edit', element: <ReportFDIProjectForm mode="edit" /> },
       { path: 'feature-6/:id/view', element: <ReportFDIProjectForm mode="view" /> },
+      { path: 'feature-2', element: <ReportListByModule /> },
     ],
   },
 ]);

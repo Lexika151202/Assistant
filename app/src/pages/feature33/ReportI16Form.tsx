@@ -90,6 +90,47 @@ const descriptionFields: { key: string; label: string; placeholder: string }[] =
   { key: 'otherIssues', label: 'Các vấn đề khác', placeholder: 'Mô tả các vấn đề khác...' },
 ];
 
+const projectDatabase: Record<string, {
+  investors: Investor[];
+  projectId: string;
+  projectNameAbroad: string;
+  hqAddress: string;
+  objective: string;
+  representativeOffice: string;
+}> = {
+  'DA-2024-001': {
+    investors: [
+      { id: '1', name: 'Công ty TNHH Đầu tư ABC', taxCode: '0123456789', phone: '024-12345678', address: '123 Đường Láng, Đống Đa, Hà Nội' },
+      { id: '2', name: 'Công ty Cổ phần Đầu tư XYZ', taxCode: '0987654321', phone: '024-87654321', address: '456 Nguyễn Trãi, Thanh Xuân, Hà Nội' },
+    ],
+    projectId: 'VN-LA-2024-001',
+    projectNameAbroad: 'Dự án khai thác khoáng sản tại Lào',
+    hqAddress: 'Tỉnh Savannakhet, Lào',
+    objective: 'Khai thác và chế biến khoáng sản phục vụ xuất khẩu',
+    representativeOffice: 'Đại sứ quán Việt Nam tại Lào',
+  },
+  'DA-2024-002': {
+    investors: [
+      { id: '1', name: 'Công ty TNHH Công nghệ DEF', taxCode: '0112233445', phone: '028-33445566', address: '789 Nguyễn Huệ, Q.1, TP.HCM' },
+    ],
+    projectId: 'VN-SG-2024-002',
+    projectNameAbroad: 'Dự án sản xuất linh kiện điện tử tại Singapore',
+    hqAddress: 'Jurong East, Singapore',
+    objective: 'Sản xuất linh kiện điện tử phục vụ thị trường Đông Nam Á',
+    representativeOffice: 'Đại sứ quán Việt Nam tại Singapore',
+  },
+  'DA-2024-003': {
+    investors: [
+      { id: '1', name: 'Tập đoàn Nông nghiệp GHI', taxCode: '0556677889', phone: '024-99887766', address: '12 Trần Phú, Ba Đình, Hà Nội' },
+    ],
+    projectId: 'VN-TH-2024-003',
+    projectNameAbroad: 'Dự án trồng cao su tại Thái Lan',
+    hqAddress: 'Tỉnh Rayong, Thái Lan',
+    objective: 'Trồng và chế biến cao su xuất khẩu',
+    representativeOffice: 'Đại sứ quán Việt Nam tại Thái Lan',
+  },
+};
+
 export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -99,13 +140,13 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
   // General
   const [projectCode, setProjectCode] = useState(isCreate ? '' : 'DA-2024-001');
   const [reportYear, setReportYear] = useState(isCreate ? '2026' : '2025');
-  const [representativeOffice, setRepresentativeOffice] = useState('');
+  const [representativeOffice, setRepresentativeOffice] = useState(isCreate ? '' : 'Đại sứ quán Việt Nam tại Lào');
 
   // Investors
-  const [investors, setInvestors] = useState<Investor[]>([
-    { id: '1', name: isCreate ? '' : 'Công ty TNHH Đầu tư ABC', taxCode: isCreate ? '' : '0123456789', phone: isCreate ? '' : '024-12345678', address: isCreate ? '' : '123 Đường Láng, Đống Đa, Hà Nội' },
-    { id: '2', name: isCreate ? '' : 'Công ty Cổ phần Đầu tư XYZ', taxCode: isCreate ? '' : '0987654321', phone: isCreate ? '' : '024-87654321', address: isCreate ? '' : '456 Nguyễn Trãi, Thanh Xuân, Hà Nội' },
-  ]);
+  const [investors, setInvestors] = useState<Investor[]>(
+    isCreate ? [{ id: '1', name: '', taxCode: '', phone: '', address: '' }]
+    : projectDatabase['DA-2024-001'].investors
+  );
   const [reporterPhone, setReporterPhone] = useState('');
   const [reporterEmail, setReporterEmail] = useState('');
 
@@ -120,7 +161,30 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
   const [hqAddress, setHqAddress] = useState(isCreate ? '' : 'Tỉnh Savannakhet, Lào');
   const [repPhone, setRepPhone] = useState('');
   const [repEmail, setRepEmail] = useState('');
-  const [objective, setObjective] = useState('');
+  const [objective, setObjective] = useState(isCreate ? '' : 'Khai thác và chế biến khoáng sản phục vụ xuất khẩu');
+
+  const projectSelected = !!projectCode;
+  const fieldsDisabled = isView || (!isCreate ? false : !projectSelected);
+
+  function handleProjectChange(code: string) {
+    setProjectCode(code);
+    const data = projectDatabase[code];
+    if (data) {
+      setInvestors(data.investors);
+      setProjectId(data.projectId);
+      setProjectNameAbroad(data.projectNameAbroad);
+      setHqAddress(data.hqAddress);
+      setObjective(data.objective);
+      setRepresentativeOffice(data.representativeOffice);
+    } else {
+      setInvestors([{ id: '1', name: '', taxCode: '', phone: '', address: '' }]);
+      setProjectId('');
+      setProjectNameAbroad('');
+      setHqAddress('');
+      setObjective('');
+      setRepresentativeOffice('');
+    }
+  }
 
   // Indicators — v1..v3 = "Thực hiện năm báo cáo" (inv1/inv2/total), v4..v6 = "Luỹ kế" (inv1/inv2/total)
   type IndicatorVals = { v1: string; v2: string; v3: string; v4: string; v5: string; v6: string };
@@ -170,11 +234,11 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
   }
 
   const pageTitle =
-    mode === 'create' ? 'Lập báo cáo định kỳ năm – Hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)' :
+    mode === 'create' ? 'Lập báo cáo định kỳ năm – Tình hình hoạt động dự án đầu tư tại nước ngoài (Mẫu I.16)' :
     mode === 'edit' ? 'Chỉnh sửa báo cáo định kỳ năm – Mẫu I.16' :
     'Xem báo cáo định kỳ năm – Mẫu I.16';
 
-  const roClass = isView ? 'bg-[#f9fafb]' : '';
+  const roClass = fieldsDisabled ? 'bg-[#f9fafb]' : '';
   const investorNames = investors.map((i, idx) => i.name || `Nhà đầu tư ${idx + 1}`);
 
   return (
@@ -210,7 +274,7 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
                 id="projectCode"
                 className="w-full h-10 px-3 bg-white border border-[#e5e7eb] rounded-[8px] text-[14px] text-[#0a0a0a] outline-none"
                 value={projectCode}
-                onChange={(e) => setProjectCode(e.target.value)}
+                onChange={(e) => handleProjectChange(e.target.value)}
               >
                 <option value="">-- Chọn dự án ĐTRNN --</option>
                 <option value="DA-2024-001">Dự án 1 - Khai thác khoáng sản tại Lào</option>
@@ -228,12 +292,12 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <Label required={!isView}>Năm báo cáo</Label>
-            <Input placeholder="VD: 2026" value={reportYear} onChange={(e) => setReportYear(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="VD: 2026" value={reportYear} onChange={(e) => setReportYear(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
             <span className="text-[12px] text-[#6a7282] italic">Thời hạn nộp: Trước ngày 15/02 năm sau</span>
           </div>
           <div className="flex flex-col gap-1.5">
             <Label required={!isView}>Cơ quan đại diện Việt Nam tại nước tiếp nhận đầu tư</Label>
-            <Input placeholder="Nhập Cơ quan đại diện Việt Nam tại nước tiếp nhận đầu tư" value={representativeOffice} onChange={(e) => setRepresentativeOffice(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập Cơ quan đại diện Việt Nam tại nước tiếp nhận đầu tư" value={representativeOffice} onChange={(e) => setRepresentativeOffice(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
         </div>
       </div>
@@ -254,19 +318,19 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
                   <Label>Tên nhà đầu tư</Label>
-                  <Input placeholder="Nhập tên nhà đầu tư" value={inv.name} onChange={(e) => updateInvestor(inv.id, 'name', e.target.value)} readOnly={isView} className={roClass} />
+                  <Input placeholder="Nhập tên nhà đầu tư" value={inv.name} onChange={(e) => updateInvestor(inv.id, 'name', e.target.value)} readOnly={fieldsDisabled} className={roClass} />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label>Mã số thuế</Label>
-                  <Input placeholder="Nhập mã số thuế" value={inv.taxCode} onChange={(e) => updateInvestor(inv.id, 'taxCode', e.target.value)} readOnly={isView} className={roClass} />
+                  <Input placeholder="Nhập mã số thuế" value={inv.taxCode} onChange={(e) => updateInvestor(inv.id, 'taxCode', e.target.value)} readOnly={fieldsDisabled} className={roClass} />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label>Số điện thoại</Label>
-                  <Input placeholder="Nhập số điện thoại" value={inv.phone} onChange={(e) => updateInvestor(inv.id, 'phone', e.target.value)} readOnly={isView} className={roClass} />
+                  <Input placeholder="Nhập số điện thoại" value={inv.phone} onChange={(e) => updateInvestor(inv.id, 'phone', e.target.value)} readOnly={fieldsDisabled} className={roClass} />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label>Địa chỉ</Label>
-                  <Input placeholder="Nhập địa chỉ" value={inv.address} onChange={(e) => updateInvestor(inv.id, 'address', e.target.value)} readOnly={isView} className={roClass} />
+                  <Input placeholder="Nhập địa chỉ" value={inv.address} onChange={(e) => updateInvestor(inv.id, 'address', e.target.value)} readOnly={fieldsDisabled} className={roClass} />
                 </div>
               </div>
             </div>
@@ -282,11 +346,11 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <Label required={!isView}>Số điện thoại người làm báo cáo</Label>
-                <Input placeholder="Nhập số điện thoại" value={reporterPhone} onChange={(e) => setReporterPhone(e.target.value)} readOnly={isView} className={roClass} />
+                <Input placeholder="Nhập số điện thoại" value={reporterPhone} onChange={(e) => setReporterPhone(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
               </div>
               <div className="flex flex-col gap-1.5">
                 <Label required={!isView}>Email</Label>
-                <Input placeholder="Nhập email" value={reporterEmail} onChange={(e) => setReporterEmail(e.target.value)} readOnly={isView} className={roClass} />
+                <Input placeholder="Nhập email" value={reporterEmail} onChange={(e) => setReporterEmail(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
               </div>
             </div>
           </div>
@@ -299,47 +363,47 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5 col-span-2">
             <Label>Mã số dự án ĐTRNN / Số xác nhận ĐKGD ngoại hối</Label>
-            <Input placeholder="VN-XX-YYYY-NNN" value={projectId} onChange={(e) => setProjectId(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="VN-XX-YYYY-NNN" value={projectId} onChange={(e) => setProjectId(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Ngày cấp</Label>
-            <Input placeholder="DD/MM/YYYY" value={issueDate} onChange={(e) => setIssueDate(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="DD/MM/YYYY" value={issueDate} onChange={(e) => setIssueDate(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Điều chỉnh (nếu có)</Label>
-            <Input placeholder="Số lần điều chỉnh..." value={adjustments} onChange={(e) => setAdjustments(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Số lần điều chỉnh..." value={adjustments} onChange={(e) => setAdjustments(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Số giấy phép / Văn bản chấp thuận</Label>
-            <Input placeholder="Nhập số GP/VB" value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập số GP/VB" value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Ngày cấp</Label>
-            <Input placeholder="DD/MM/YYYY" value={licenseDate} onChange={(e) => setLicenseDate(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="DD/MM/YYYY" value={licenseDate} onChange={(e) => setLicenseDate(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5 col-span-2">
             <Label>Cơ quan cấp</Label>
-            <Input placeholder="Nhập cơ quan cấp" value={issuingAuthority} onChange={(e) => setIssuingAuthority(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập cơ quan cấp" value={issuingAuthority} onChange={(e) => setIssuingAuthority(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5 col-span-2">
             <Label>Tên dự án / Tổ chức kinh tế ở nước ngoài</Label>
-            <Input placeholder="Nhập tên dự án" value={projectNameAbroad} onChange={(e) => setProjectNameAbroad(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập tên dự án" value={projectNameAbroad} onChange={(e) => setProjectNameAbroad(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5 col-span-2">
             <Label>Địa chỉ trụ sở tại nước ngoài</Label>
-            <Input placeholder="Nhập địa chỉ trụ sở" value={hqAddress} onChange={(e) => setHqAddress(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập địa chỉ trụ sở" value={hqAddress} onChange={(e) => setHqAddress(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>SĐT người đại diện</Label>
-            <Input placeholder="Nhập số điện thoại" value={repPhone} onChange={(e) => setRepPhone(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập số điện thoại" value={repPhone} onChange={(e) => setRepPhone(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Email</Label>
-            <Input placeholder="Nhập email" value={repEmail} onChange={(e) => setRepEmail(e.target.value)} readOnly={isView} className={roClass} />
+            <Input placeholder="Nhập email" value={repEmail} onChange={(e) => setRepEmail(e.target.value)} readOnly={fieldsDisabled} className={roClass} />
           </div>
           <div className="flex flex-col gap-1.5 col-span-2">
             <Label>Mục tiêu hoạt động chính</Label>
-            <Textarea placeholder="Mô tả mục tiêu hoạt động chính của dự án..." value={objective} onChange={(e) => setObjective(e.target.value)} readOnly={isView} className={roClass} rows={3} />
+            <Textarea placeholder="Mô tả mục tiêu hoạt động chính của dự án..." value={objective} onChange={(e) => setObjective(e.target.value)} readOnly={fieldsDisabled} className={roClass} rows={3} />
           </div>
         </div>
       </div>
@@ -439,7 +503,7 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
                   id={`progress-${opt.value}`}
                   label={opt.label}
                   checked={!!progress[opt.value]}
-                  disabled={isView}
+                  disabled={fieldsDisabled}
                   onChange={(e) => setProgress((p) => ({ ...p, [opt.value]: e.target.checked }))}
                 />
               ))}
@@ -447,7 +511,7 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
           </div>
           <div className="flex flex-col gap-1.5">
             <Label>Trình bày lý do/giải pháp khắc phục</Label>
-            <Textarea placeholder="Mô tả lý do/giải pháp khắc phục" value={progressNote} onChange={(e) => setProgressNote(e.target.value)} readOnly={isView} className={roClass} rows={4} />
+            <Textarea placeholder="Mô tả lý do/giải pháp khắc phục" value={progressNote} onChange={(e) => setProgressNote(e.target.value)} readOnly={fieldsDisabled} className={roClass} rows={4} />
           </div>
         </div>
       </div>
@@ -463,7 +527,7 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
                 placeholder={f.placeholder}
                 value={descriptions[f.key] || ''}
                 onChange={(e) => setDescriptions((d) => ({ ...d, [f.key]: e.target.value }))}
-                readOnly={isView}
+                readOnly={fieldsDisabled}
                 className={roClass}
                 rows={3}
               />
