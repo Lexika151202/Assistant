@@ -5,7 +5,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
-import { Button } from '../../components/shared/Button';
 
 type KCNStatus = 'Đã duyệt' | 'Chờ duyệt' | 'Nháp';
 type NhomBaoCao = 'Đầu tư nước ngoài' | 'Đầu tư trong nước' | '';
@@ -105,7 +104,7 @@ export default function ReportKCNList() {
   const [kyFilter, setKyFilter] = useState<KyBaoCao | ''>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [, setSelectedRows] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
     return mockData.filter((r) => {

@@ -148,11 +148,6 @@ export default function ReportI17Form({ mode = 'create' }: ReportI17FormProps) {
   }
   function handlePrint() { window.print(); }
 
-  const pageTitle =
-    mode === 'create' ? 'Lập báo cáo năm' :
-    mode === 'edit' ? 'Chỉnh sửa báo cáo năm' :
-    'Xem báo cáo năm';
-
   const roFieldClass = isView ? 'bg-[#f9fafb]' : '';
 
   return (

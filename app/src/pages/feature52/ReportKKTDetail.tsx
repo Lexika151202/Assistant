@@ -126,7 +126,7 @@ const initialXayDungRows: KKTRow[] = [emptyRow()];
 function computeTotals(rows: KKTRow[]): Partial<Record<ColKey, number>> {
   const totals: Partial<Record<ColKey, number>> = {};
   for (const key of NUMERIC_KEYS) {
-    totals[key] = rows.reduce((sum, row) => sum + (Number((row as Record<string, unknown>)[key]) || 0), 0);
+    totals[key] = rows.reduce((sum, row) => sum + (Number((row as unknown as Record<string, unknown>)[key]) || 0), 0);
   }
   return totals;
 }
@@ -313,7 +313,7 @@ function EditableKKTTable({
                             ? 'bg-[#f9fafb] opacity-50'
                             : 'bg-[#f3f3f5]'
                         }`}
-                        value={(row as Record<string, unknown>)[key] as number}
+                        value={(row as unknown as Record<string, unknown>)[key] as number}
                         readOnly={isReadOnly}
                         onChange={(e) => onChangeRow(row.id, key as keyof KKTRow, Number(e.target.value))}
                       />
