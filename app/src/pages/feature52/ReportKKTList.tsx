@@ -5,6 +5,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 // ---- Types ----
 type KKTStatus =
@@ -247,6 +248,12 @@ export default function ReportKKTList() {
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Tình hình thu hút dự án đầu tư trong khu kinh tế' },
+      ]} />
+
           {/* Page Title */}
           <div className="mb-6">
             <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase">

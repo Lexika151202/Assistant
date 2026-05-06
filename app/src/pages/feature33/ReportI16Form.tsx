@@ -12,6 +12,7 @@ import { Textarea } from '../../components/shared/Textarea';
 import { Label } from '../../components/shared/Label';
 import { Checkbox } from '../../components/shared/Checkbox';
 import { Badge } from '../../components/shared/Badge';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 interface ReportI16FormProps {
   mode?: 'create' | 'edit' | 'view';
@@ -243,14 +244,12 @@ export default function ReportI16Form({ mode = 'create' }: ReportI16FormProps) {
 
   return (
     <Container>
-      {/* Breadcrumb */}
-      <nav className="text-[13px] text-[#6a7282] mb-2">
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/')}>Trang chủ</span>
-        <span className="mx-2">›</span>
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/feature-33')}>Báo cáo định kỳ</span>
-        <span className="mx-2">›</span>
-        <span className="text-[#0a0a0a]">Lập báo cáo năm</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Báo cáo định kỳ năm', to: '/feature-33' },
+        { label: mode === 'create' ? 'Lập báo cáo' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết' },
+      ]} />
 
       {/* Title + status badge */}
       <div className="flex items-start justify-between mb-5">

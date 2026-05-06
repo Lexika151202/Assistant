@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 import { Button } from '../../components/shared/Button';
 import { Input } from '../../components/shared/Input';
 
@@ -215,6 +216,12 @@ export default function ReportCommitmentList() {
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Báo cáo cam kết/thỏa thuận đầu tư' },
+      ]} />
+
       {/* Page heading — Figma 2207:2363 */}
       <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] mb-6">
         QUẢN LÝ BÁO CÁO XÚC TIẾN ĐẦU TƯ

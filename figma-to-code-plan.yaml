@@ -99,6 +99,98 @@ phase0:
     typescript: "npx tsc --noEmit → 0 errors"
 
 features:
+  "1":
+    name: "Dashboard tổng quan hệ thống báo cáo"
+    spec_source: figma
+    figma_section: "317:3985"
+    figma_section_name: "Dashboard"
+    figma_shared_nodes: []
+    status: done
+    screens:
+      "dashboard":
+        name: "Dashboard"
+        status: done
+        file_path: "app/src/pages/feature1/Dashboard.tsx"
+        tall_screen: false
+        screen_height: 2123
+        figma_nodes:
+          - "287:3"
+        figma_sub_nodes:
+          - nodeId: "287:3"
+            name: "Dashboard (full frame)"
+            height: 2123
+        content_map:
+          section_titles:
+            - "DASHBOARD HỆ THỐNG BÁO CÁO ĐẦU TƯ QUỐC GIA"
+            - "Thống kê tổng hợp Nhà đầu tư"
+            - "Thống kê tổng hợp Địa phương"
+            - "Tỷ lệ hoàn thành nghĩa vụ của các địa phương"
+            - "So sánh tỷ lệ hoàn thành giữa các Địa phương"
+            - "Tình hình nộp BC theo địa phương"
+            - "Danh sách địa phương chậm gửi BC"
+            - "Tình hình nộp BC theo lĩnh vực đầu tư"
+            - "Danh sách nhà đầu tư chậm nộp BC"
+          field_labels:
+            - "Bộ lọc thời gian:"
+            - "Phạm vi dữ liệu: Bộ Kế hoạch và Đầu tư"
+          column_headers:
+            - "STT"
+            - "Tên NĐT"
+            - "Dự án"
+            - "Địa phương"
+            - "Lĩnh vực"
+            - "Quá hạn"
+          button_text:
+            - "Tất cả thời gian"
+            - "Sắp xếp thứ hạng"
+          status_labels:
+            - "Đã hoàn thành"
+            - "Chưa hoàn thành"
+            - "Quá hạn"
+          other_text:
+            - "Nhà đầu tư"
+            - "Địa phương"
+            - "Tổng số địa phương phải gửi"
+            - "Tổng số NĐT phải nộp"
+            - "63"
+            - "58"
+            - "3"
+            - "2"
+            - "Đã hoàn thành: 88.7%"
+            - "Chưa hoàn thành: 9.3%"
+            - "Quá hạn: 2.0%"
+            - "TP.HCM"
+            - "Hà Nội"
+            - "Đà Nẵng"
+            - "Bình Dương"
+            - "Ninh Thuận"
+            - "Thương mại"
+            - "Công nghiệp"
+            - "Năng lượng"
+            - "Công ty ABC"
+            - "Nhà máy sản xuất"
+            - "Công ty CP XYZ"
+            - "Dự án thương mại điện tử"
+            - "Công ty CP Đầu tư DEF"
+            - "Dự án năng lượng tái tạo"
+            - "Hệ thống Báo cáo"
+            - "Đầu tư Quốc gia"
+            - "Dashboard"
+            - "Danh sách báo cáo"
+            - "Báo cáo đã gửi"
+            - "Đơn vị quản lý"
+            - "Bộ Kế hoạch và Đầu tư"
+            - "HC"
+        handles_functions:
+          - "1: Xem tổng quan NĐT (tổng NĐT, BC hoàn thành/chưa + Lọc)"
+          - "2: Xem tình hình nộp BC theo NĐT (theo địa phương + Sắp xếp)"
+          - "3: Xem tình hình nộp BC theo lĩnh vực đầu tư (tỷ lệ + Sắp xếp)"
+          - "4: Xem DS nhà đầu tư chậm nộp BC (Lọc, Sắp xếp, Tìm kiếm)"
+          - "6: Xem tổng quan ĐP (tổng ĐP phải gửi, hoàn thành/chưa + Lọc)"
+          - "7: Xem tình hình nộp BC theo địa phương (tỷ lệ + Sắp xếp)"
+          - "8: Xem DS địa phương chậm gửi BC (Lọc, Sắp xếp, Tìm kiếm)"
+          - "10: Xem chất lượng dữ liệu BC của địa phương (Sắp xếp)"
+
   "2":
     name: "Tổng hợp báo cáo theo phân hệ"
     spec_source: figma

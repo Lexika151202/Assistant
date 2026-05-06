@@ -81,7 +81,8 @@ interface ReportItem {
   id: string;
   name: string;
   period?: string;
-  path: string;
+  path?: string;
+  designed?: boolean;
 }
 
 interface ModuleGroup {
@@ -101,16 +102,19 @@ const moduleGroups: ModuleGroup[] = [
         id: 'prom-1',
         name: 'Báo cáo kết quả thực hiện chương trình xúc tiến đầu tư',
         path: '/feature-3',
+        designed: true,
       },
       {
         id: 'prom-2',
         name: 'Biểu tổng hợp tình hình thực hiện chương trình XTĐT',
         path: '/feature-4',
+        designed: true,
       },
       {
         id: 'prom-3',
         name: 'Báo cáo tình hình thực hiện các cam kết/thỏa thuận',
         path: '/feature-5',
+        designed: true,
       },
     ],
   },
@@ -122,22 +126,18 @@ const moduleGroups: ModuleGroup[] = [
       {
         id: 'fdi-1',
         name: 'Báo cáo trước khi thực hiện dự án đầu tư',
-        path: '/feature-6',
       },
       {
         id: 'fdi-2',
         name: 'Báo cáo tình hình thực hiện dự án đầu tư quý',
-        path: '/feature-6',
       },
       {
         id: 'fdi-3',
         name: 'Báo cáo tổng hợp tình hình đầu tư nước ngoài tại Việt Nam',
-        path: '/feature-6',
       },
       {
         id: 'fdi-4',
         name: 'Báo cáo đánh giá hiệu quả hoạt động dự án FDI',
-        path: '/feature-6',
       },
     ],
   },
@@ -150,19 +150,16 @@ const moduleGroups: ModuleGroup[] = [
         id: 'ddi-1',
         name: 'Báo cáo tình hình thực hiện dự án đầu tư năm',
         period: 'Năm',
-        path: '/feature-33',
       },
       {
         id: 'ddi-2',
         name: 'Báo cáo kế hoạch đầu tư công trung hạn',
         period: 'Năm',
-        path: '/feature-33',
       },
       {
         id: 'ddi-3',
         name: 'Báo cáo giải ngân vốn đầu tư công',
         period: 'Quý',
-        path: '/feature-33',
       },
     ],
   },
@@ -176,24 +173,24 @@ const moduleGroups: ModuleGroup[] = [
         name: 'Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài',
         period: 'Năm',
         path: '/feature-33',
+        designed: true,
       },
       {
         id: 'odi-2',
         name: 'Báo cáo tình hình hoạt động đầu tư ra nước ngoài cho năm tài chính',
         period: 'Năm',
         path: '/feature-34',
+        designed: true,
       },
       {
         id: 'odi-3',
         name: 'Báo cáo về việc cho tổ chức kinh tế ở nước ngoài vay vốn',
         period: 'Năm',
-        path: '/feature-33',
       },
       {
         id: 'odi-4',
         name: 'Báo cáo đánh giá hiệu quả đầu tư ra nước ngoài',
         period: 'Năm',
-        path: '/feature-33',
       },
     ],
   },
@@ -207,18 +204,19 @@ const moduleGroups: ModuleGroup[] = [
         name: 'Tình hình thu hút đầu tư vào khu công nghiệp',
         period: 'Quý',
         path: '/feature-42',
+        designed: true,
       },
       {
         id: 'ez-2',
         name: 'Báo cáo tổng hợp tình hình phát triển KKT-KCN',
         period: 'Năm',
         path: '/feature-52',
+        designed: true,
       },
       {
         id: 'ez-3',
         name: 'Báo cáo hiệu quả kinh tế - xã hội của KKT-KCN',
         period: 'Năm',
-        path: '/feature-52',
       },
     ],
   },
@@ -262,13 +260,15 @@ function ModuleCard({ group, onReportClick }: ModuleCardProps) {
         <div className="border-t border-[#f3f4f6]">
           {group.reports.map((report, idx) => {
             const isLast = idx === group.reports.length - 1;
+            const isDesigned = !!report.designed;
             return (
               <button
                 key={report.id}
-                onClick={() => onReportClick(report.path)}
-                className={`w-full flex items-center justify-between gap-3 px-4 py-4 text-left hover:bg-[#fafafa] transition-colors ${
+                onClick={() => isDesigned && report.path && onReportClick(report.path)}
+                disabled={!isDesigned}
+                className={`w-full flex items-center justify-between gap-3 px-4 py-4 text-left transition-colors ${
                   isLast ? '' : 'border-b border-[#f3f4f6]'
-                }`}
+                } ${isDesigned ? 'hover:bg-[#fafafa] cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   {/* Doc icon */}
@@ -277,9 +277,21 @@ function ModuleCard({ group, onReportClick }: ModuleCardProps) {
                   </div>
                   {/* Text */}
                   <div className="flex flex-col gap-0.5 min-w-0">
-                    <p className="text-[16px] leading-[24px] font-medium text-[#101828] text-left">
-                      {report.name}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[16px] leading-[24px] font-medium text-[#101828] text-left">
+                        {report.name}
+                      </p>
+                      {isDesigned && (
+                        <span className="inline-flex items-center px-[6px] py-[1px] rounded-[4px] text-[11px] font-semibold bg-[#ecfdf3] text-[#027a48] border border-[#a6f4c5] whitespace-nowrap shrink-0">
+                          Demo
+                        </span>
+                      )}
+                      {!isDesigned && (
+                        <span className="inline-flex items-center px-[6px] py-[1px] rounded-[4px] text-[11px] font-semibold bg-[#f2f4f7] text-[#667085] border border-[#e4e7ec] whitespace-nowrap shrink-0">
+                          Chưa thiết kế
+                        </span>
+                      )}
+                    </div>
                     {report.period && (
                       <p className="text-[14px] leading-[20px] text-[#6a7282]">
                         Kỳ báo cáo: {report.period}
@@ -287,10 +299,12 @@ function ModuleCard({ group, onReportClick }: ModuleCardProps) {
                     )}
                   </div>
                 </div>
-                {/* Chevron right */}
-                <div className="flex-shrink-0 w-8 h-8 bg-[#f3f4f6] rounded-full flex items-center justify-center">
-                  <ChevronRightIcon />
-                </div>
+                {/* Chevron right — only for designed */}
+                {isDesigned && (
+                  <div className="flex-shrink-0 w-8 h-8 bg-[#f3f4f6] rounded-full flex items-center justify-center">
+                    <ChevronRightIcon />
+                  </div>
+                )}
               </button>
             );
           })}
@@ -307,6 +321,7 @@ export default function ReportListByModule() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterModule, setFilterModule] = useState<string>('');
   const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDemo, setFilterDemo] = useState(false);
 
   const filteredGroups = useMemo(() => {
     let groups = moduleGroups;
@@ -314,6 +329,16 @@ export default function ReportListByModule() {
     // Filter by module
     if (filterModule) {
       groups = groups.filter((g) => g.id === filterModule);
+    }
+
+    // Filter by demo (designed only)
+    if (filterDemo) {
+      groups = groups
+        .map((g) => ({
+          ...g,
+          reports: g.reports.filter((r) => r.designed),
+        }))
+        .filter((g) => g.reports.length > 0);
     }
 
     // Filter by search query
@@ -328,7 +353,7 @@ export default function ReportListByModule() {
     }
 
     return groups;
-  }, [searchQuery, filterModule]);
+  }, [searchQuery, filterModule, filterDemo]);
 
   const handleReportClick = (path: string) => {
     navigate(path);
@@ -394,6 +419,22 @@ export default function ReportListByModule() {
               </div>
             )}
           </div>
+
+          {/* Demo filter toggle */}
+          <button
+            onClick={() => setFilterDemo((v) => !v)}
+            className={`h-9 px-3 rounded-[8px] flex items-center gap-2 text-[14px] font-medium transition-colors border ${
+              filterDemo
+                ? 'bg-[#ecfdf3] text-[#027a48] border-[#a6f4c5]'
+                : 'bg-[#f3f3f5] text-[#0a0a0a] border-transparent hover:bg-[#e9e9ec]'
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="1.5" y="1.5" width="13" height="13" rx="3" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+            Demo
+          </button>
         </div>
 
         {/* Module cards */}

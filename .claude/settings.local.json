@@ -13,7 +13,22 @@
       "Bash(node -e ' *)",
       "Bash(node *)",
       "Bash(pip install *)",
-      "mcp__plugin_figma_figma__get_design_context"
+      "mcp__plugin_figma_figma__get_design_context",
+      "PowerShell(Start-Process \"http://localhost:5173\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\admin\\\\Documents\\\\Project\\\\Assistant\\\\src\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "Bash(npx vite *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\admin\\\\Documents\\\\Project\\\\Assistant\\\\app\\\\src\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(grep -oP '<\\(frame|section\\) id=\\\\\\\\\"[^\"]+\\\\\\\\\" name=\\\\\\\\\"[^\"]+\\\\\\\\\"' \"C:\\\\Users\\\\admin\\\\.claude\\\\projects\\\\C--Users-admin-Documents-Project-Assistant\\\\2700a021-d1bb-48a5-90f6-cc7b1098eeaf\\\\tool-results\\\\mcp-figma-get_metadata-1778079704409.txt\")",
+      "Bash(grep -v 'name=\\\\\\\\\"Container\\\\\\\\\"')",
+      "Bash(grep -v 'name=\\\\\\\\\"Icon\\\\\\\\\"')",
+      "Bash(grep -v 'name=\\\\\\\\\"Text\\\\\\\\\"')",
+      "Bash(grep -v 'name=\\\\\\\\\"Paragraph\\\\\\\\\"')",
+      "PowerShell(Get-Content *)",
+      "PowerShell(cd C:\\\\Users\\\\admin\\\\Documents\\\\Project\\\\Assistant; \\(git diff HEAD -- app/src/pages/feature1/Dashboard.tsx\\).Count)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   },
   "prefersReducedMotion": false

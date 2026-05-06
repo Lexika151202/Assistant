@@ -11,3 +11,4 @@ export { Badge } from './Badge';
 export { Sidebar } from './Sidebar';
 export type { SidebarItem, SidebarGroup } from './Sidebar';
 export { Header } from './Header';
+export { Breadcrumb, featureNames } from './Breadcrumb';

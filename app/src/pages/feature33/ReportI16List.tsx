@@ -5,6 +5,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 type YearState = 'future' | 'inDeadline' | 'overdue' | 'closed';
 type ReportStatus = 'Lưu nháp' | 'Đã nộp' | 'Yêu cầu chỉnh sửa';
@@ -193,6 +194,12 @@ export default function ReportI16List() {
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài' },
+      ]} />
+
       {/* Page heading */}
       <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase mb-5">
         Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài

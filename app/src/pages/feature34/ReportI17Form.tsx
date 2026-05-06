@@ -14,6 +14,7 @@ import { Textarea } from '../../components/shared/Textarea';
 import { Label } from '../../components/shared/Label';
 import { Checkbox } from '../../components/shared/Checkbox';
 import { Badge } from '../../components/shared/Badge';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 interface ReportI17FormProps {
   mode?: 'create' | 'edit' | 'view';
@@ -152,14 +153,12 @@ export default function ReportI17Form({ mode = 'create' }: ReportI17FormProps) {
 
   return (
     <Container>
-      {/* Breadcrumb */}
-      <nav className="text-[13px] text-[#6b7280] mb-2 flex items-center gap-1">
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/')}>Trang chủ</span>
-        <span>/</span>
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/feature-34')}>Báo cáo định kỳ</span>
-        <span>/</span>
-        <span className="text-[#1f1f1f]">{mode === 'create' ? 'Lập báo cáo năm' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết'}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Báo cáo đầu tư ra nước ngoài', to: '/feature-34' },
+        { label: mode === 'create' ? 'Lập báo cáo năm' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết' },
+      ]} />
 
       {/* Page title */}
       <div className="flex items-start justify-between mb-6">

@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
 import { Button } from '../../components/shared/Button';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 import { Input } from '../../components/shared/Input';
 
 type ReportStatus = 'Lưu nháp' | 'Đã nộp' | 'Yêu cầu chỉnh sửa';
@@ -172,6 +173,12 @@ export default function ReportI17List() {
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Báo cáo tình hình hoạt động đầu tư ra nước ngoài cho năm tài chính' },
+      ]} />
+
       {/* Page heading */}
       <div className="mb-6">
         <h1 className="font-bold text-[24px] leading-[32px] text-[#101828] uppercase">

@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle } from '../../components/shared/Card';
 import { Input } from '../../components/shared/Input';
 import { Label } from '../../components/shared/Label';
 import { Badge } from '../../components/shared/Badge';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 interface ReportXTDTFormProps {
   mode?: 'create' | 'edit' | 'view';
@@ -371,15 +372,12 @@ export default function ReportXTDTForm({ mode = 'create' }: ReportXTDTFormProps)
 
   return (
     <Container>
-      <nav className="text-[13px] text-[#6b7280] mb-2 flex items-center gap-1">
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/')}>Trang chủ</span>
-        <span>/</span>
-        <span className="cursor-pointer hover:text-[#a50000]" onClick={() => navigate('/feature-3')}>Quản lý xúc tiến đầu tư</span>
-        <span>/</span>
-        <span className="text-[#1f1f1f]">
-          {mode === 'create' ? 'Lập báo cáo' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết'}
-        </span>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Quản lý xúc tiến đầu tư', to: '/feature-3' },
+        { label: mode === 'create' ? 'Lập báo cáo' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết' },
+      ]} />
 
       <div className="flex items-start justify-between mb-0">
         <h1 className="font-bold text-[24px] leading-[32px] text-[#101828]">
