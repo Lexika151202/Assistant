@@ -173,8 +173,8 @@ const moduleGroups: ModuleGroup[] = [
     reports: [
       {
         id: 'odi-1',
-        name: 'Báo cáo định kỳ 6 tháng tình hình hoạt động dự án đầu tư tại nước ngoài',
-        period: '6 Tháng',
+        name: 'Báo cáo định kỳ năm tình hình hoạt động dự án đầu tư tại nước ngoài',
+        period: 'Năm',
         path: '/feature-33',
       },
       {

@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 type TabType = 'nuocNgoai' | 'trongNuoc';
 
@@ -317,6 +318,13 @@ export default function ReportKCNDetail() {
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Thu hút đầu tư vào KCN', to: '/feature-42' },
+        { label: 'Chi tiết' },
+      ]} />
+
       {/* Header: Quay lại + tiêu đề + breadcrumb info */}
       <div className="flex items-start gap-4 mb-6">
         {/* Quay lại button */}

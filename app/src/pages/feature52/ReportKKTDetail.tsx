@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container } from '../../components/shared/Container';
+import { Breadcrumb } from '../../components/shared/Breadcrumb';
 
 // ---- Types ----
 type TabType = 'vanHanh' | 'xayDung';
@@ -418,6 +419,13 @@ export default function ReportKKTDetail({ mode = 'create' }: ReportKKTDetailProp
 
   return (
     <Container>
+      <Breadcrumb items={[
+        { label: 'Trang chủ', to: '/' },
+        { label: 'Tổng hợp báo cáo theo phân hệ', to: '/feature-2' },
+        { label: 'Thu hút đầu tư vào KKT', to: '/feature-52' },
+        { label: mode === 'create' ? 'Lập báo cáo' : mode === 'edit' ? 'Chỉnh sửa' : 'Xem chi tiết' },
+      ]} />
+
           {/* Header: Quay lại + Title */}
           <div className="flex items-center gap-4 mb-6">
             <button

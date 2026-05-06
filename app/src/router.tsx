@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { AppLayout } from './layouts/AppLayout';
-import { Container, Heading, Paragraph } from './components/shared';
+import Dashboard from './pages/feature1/Dashboard';
 import ReportI16List from './pages/feature33/ReportI16List';
 import ReportI16Form from './pages/feature33/ReportI16Form';
 import ReportI17List from './pages/feature34/ReportI17List';
@@ -19,21 +19,12 @@ import ReportFDIProjectList from './pages/feature6/ReportFDIProjectList';
 import ReportFDIProjectForm from './pages/feature6/ReportFDIProjectForm';
 import ReportListByModule from './pages/feature2/ReportListByModule';
 
-function Placeholder({ title }: { title: string }) {
-  return (
-    <Container>
-      <Heading level={1}>{title}</Heading>
-      <Paragraph className="mt-2">Chưa có nội dung. Sẽ được sinh bởi /gen_feature.</Paragraph>
-    </Container>
-  );
-}
-
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
     children: [
-      { index: true, element: <Placeholder title="Dashboard" /> },
+      { index: true, element: <Dashboard /> },
       { path: 'feature-33', element: <ReportI16List /> },
       { path: 'feature-33/new', element: <ReportI16Form mode="create" /> },
       { path: 'feature-33/:id/edit', element: <ReportI16Form mode="edit" /> },
