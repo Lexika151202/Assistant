@@ -1,5 +1,5 @@
 ---
-description: "Pipeline tự động: planner → scanner → generator → tester, lặp cho đến hết features. Ví dụ: /pipeline hoặc /pipeline --module 2 hoặc /pipeline --feature 2.4"
+description: "Pipeline tự động: planner → scanner → generator, lặp cho đến hết features. Ví dụ: /pipeline hoặc /pipeline --module 2 hoặc /pipeline --feature 2.4 hoặc /pipeline --parallel --module 2"
 ---
 
 ## Input (parse từ $ARGUMENTS)
@@ -7,28 +7,26 @@ description: "Pipeline tự động: planner → scanner → generator → teste
 - Không có argument → xử lý feature tiếp theo theo logic planner
 - `--module <moduleId>` → chỉ xử lý features trong module đó
 - `--feature <featureId>` → chỉ xử lý 1 feature cụ thể (skip planner)
-- `--skip-test` → bỏ qua bước test
 - `--scan-only` → chỉ scan, không gen
 - `--gen-only` → chỉ gen (feature đã scan), không scan
+- `--parallel` → kích hoạt parallel mode (yêu cầu `--module`)
 
 ## Luồng xử lý chính
+
+**Nếu có `--parallel`**: chuyển sang [Luồng Parallel](#luồng-parallel-mode) bên dưới.
+
+**Nếu không**: chạy tuần tự:
 
 ```
 START
   ↓
 [1. PLAN] → Agent(planner) → xác định feature tiếp theo
   ↓
-[2. SCAN] → Agent(scanner) → scan Figma/specs, ghi YAML
+[2. SCAN] → Agent(scanner) → scan Figma deep metadata + content_map, ghi YAML
   ↓
-[3. GEN]  → Agent(generator) → gen code .tsx
+[3. GEN]  → Agent(generator) → gen code .tsx + self-check + tsc
   ↓         ↺ nếu needs_next_batch → gọi lại generator
-[4. TEST] → Agent(tester) → kiểm tra code
-  ↓
-[5. EVALUATE] → Đánh giá kết quả:
-  ├── verdict: PASS → báo cáo, hỏi tiếp feature sau
-  ├── verdict: WARN → báo cáo, tiếp tục
-  └── verdict: FAIL + errors ≤ 3 → Agent(generator, fix mode) → re-test
-  └── verdict: FAIL + errors > 3 → DỪNG, báo user
+[4. DONE] → Báo cáo kết quả cho user
   ↓
 Lặp lại từ bước 1 (nếu user đồng ý)
 ```
@@ -58,7 +56,10 @@ Gọi Agent(scanner):
 ```
 Prompt: "Scan feature {featureId} — {featureName}.
 Figma section: {figmaSectionId}.
-Đọc plan YAML, gọi get_metadata + get_design_context, phân tích thành functions, ghi vào plan YAML.
+Đọc plan YAML, gọi get_metadata DEEP (2-3 cấp), trích xuất content_map.
+Sau khi xác định functions, NHÓM chúng thành screens dựa trên figma_nodes chung.
+Mỗi screen = 1 Figma frame/view thực tế. Functions không có frame riêng (chỉ thêm mode/action) → map vào screen chứa hành vi đó.
+Merge content_map per screen. Ghi screens[] vào plan YAML.
 Trả về SCAN_RESULT format."
 ```
 
@@ -70,8 +71,14 @@ Gọi Agent(generator):
 
 ```
 Prompt: "Gen code React Web cho feature {featureId}.
-Đọc plan YAML, lấy functions có status: scanned.
-Với mỗi function: gọi get_design_context, gen file .tsx bám sát design, cập nhật plan.
+Đọc plan YAML. Nếu feature có screens[] → dùng screen-based flow:
+  - Lấy screens có status: scanned
+  - Với mỗi screen: gọi get_design_context 1 lần (hoặc split nếu tall_screen)
+  - Gen 1 file .tsx per screen, bám sát design
+  - Self-check merged content_map, chạy tsc --noEmit, cập nhật plan
+Nếu feature chỉ có functions[] (legacy) → dùng function-based flow:
+  - Lấy functions có status: scanned
+  - Với mỗi function: gọi get_design_context, gen file, self-check, tsc
 Trả về GEN_RESULT format."
 ```
 
@@ -79,64 +86,154 @@ Nếu generator trả về `needs_next_batch: true`:
 → Gọi lại Agent(generator) cho cùng feature:
 ```
 Prompt: "Tiếp tục gen code cho feature {featureId}.
-Đọc plan YAML, lấy functions còn status: scanned (batch tiếp).
+Đọc plan YAML, lấy screens/functions còn status: scanned (batch tiếp).
 Trả về GEN_RESULT format."
 ```
 → Lặp tối đa 3 batch.
 
-## Bước 4 — TEST
+## Bước 4 — DONE
 
-**Nếu `--skip-test`**: bỏ qua bước này.
+Báo cáo kết quả cho user:
 
-Gọi Agent(tester):
-
-```
-Prompt: "Kiểm tra code đã gen cho feature {featureId}.
-Đọc plan YAML lấy các file_path có status: done.
-Chạy TypeScript check, import verify, style audit, content check.
-Trả về TEST_RESULT format."
-```
-
-## Bước 5 — EVALUATE
-
-Đọc verdict từ tester:
-
-### PASS hoặc WARN
-→ Báo cáo kết quả cho user:
+### Thành công (generator báo status: done + tsc pass)
 ```
 ✓ Feature {featureId} — {featureName}
-  Scan: N functions found
-  Gen: N/M files created
-  Test: PASS (0 errors, 0 warnings)
+  Screens: N screens (covering M functions)
+  Gen: N files created
+  TSC: PASS
+  Self-check: K/K content items verified
 
 Tiếp tục feature tiếp theo? (planner sẽ xác định)
 ```
 
-### FAIL — errors ≤ 3
-→ Gọi Agent(generator) mode fix:
+### Có vấn đề (tsc lỗi hoặc content_map thiếu)
 ```
-Prompt: "FIX_ERRORS: Sửa lỗi trong code feature {featureId}.
-Danh sách lỗi:
-{error_details từ tester}
-Đọc file, sửa từng lỗi, KHÔNG gen lại toàn bộ."
-```
-→ Gọi lại Agent(tester) → re-evaluate (tối đa 1 lần retry)
+⚠ Feature {featureId} — {featureName}
+  Gen: N/M screens created
+  Issues:
+  {issue_details từ generator}
 
-### FAIL — errors > 3
-→ DỪNG pipeline, báo user:
-```
-✗ Feature {featureId} — {featureName}
-  Test: FAIL ({N} errors)
-  Chi tiết:
-  {error_details}
-
-Pipeline tạm dừng. Vui lòng review và sửa lỗi thủ công.
-Sau khi sửa xong, chạy: /pipeline --feature {featureId} --gen-only
+User tự review và sửa. Sau khi xong: /pipeline --feature {featureId} --gen-only
 ```
 
-## Giới hạn 1 session
+---
 
-- Tối đa **3 feature cycles** mỗi session (scan+gen+test = 1 cycle)
+## Luồng Parallel Mode
+
+Khi có `--parallel --module <moduleId>`:
+
+```
+START
+  ↓
+[1. PLAN MODULE] → Agent(planner) → trả PLAN_MODULE (toàn bộ features trong module)
+  ↓
+[2. SCAN ALL]    → Tuần tự scan từng feature (tích lũy shared components)
+  ↓                Scanner F1 → ghi YAML → Scanner F2 → ghi YAML → ...
+[3. GEN //]      → Spawn N Agent(generator) song song (tối đa 3/batch)
+  ↓                Generator A: gen F1 | Generator B: gen F2 | Generator C: gen F3
+[4. COLLECT]     → Nhận GEN_RESULT từ mỗi generator
+  ↓
+[5. WRITE YAML]  → Pipeline ghi tập trung (cập nhật status + file_paths)
+  ↓
+[6. REPORT]      → Báo cáo tổng hợp, hỏi tiếp batch tiếp?
+```
+
+### Bước P1 — PLAN MODULE
+
+Gọi Agent(planner):
+
+```
+Prompt: "Quét module {moduleId}. mode: module_scan.
+Đọc figma-to-code-plan.yaml và docs/feature_list.md.
+Trả PLAN_MODULE format — danh sách features_to_scan và features_to_gen."
+```
+
+Đọc kết quả:
+- Nếu cả 2 list rỗng → module hoàn thành, KẾT THÚC
+- Nếu có features thiếu `figma_section` → hỏi user cung cấp nodeId
+
+### Bước P2 — SCAN ALL (tuần tự)
+
+Với mỗi feature trong `features_to_scan` (theo thứ tự):
+
+```
+Gọi Agent(scanner):
+"Scan feature {featureId} — {featureName}.
+ Figma section: {figmaSectionId}.
+ Đọc plan YAML, gọi get_metadata DEEP, trích xuất content_map.
+ Nhóm functions thành screens. Ghi screens[] vào plan YAML."
+```
+
+Chờ xong → scanner ghi YAML → feature tiếp theo đọc được shared_nodes.
+Nếu scanner báo section quá lớn → hỏi user, có thể skip feature đó.
+
+### Bước P3 — GEN SONG SONG
+
+Gộp danh sách:
+- `features_to_gen` (từ planner — đã scan trước đó)
+- Features vừa scan xong (từ bước P2)
+= `all_features_ready_for_gen`
+
+Chia batch: tối đa 3 features/batch.
+
+```
+Batch 1: spawn song song 3 Agent(generator):
+  Agent(generator, "Gen feature X.1. PARALLEL_MODE: true.
+    Đọc plan YAML, gen per-screen, self-check, tsc. Trả GEN_RESULT với yaml_updates.")
+  Agent(generator, "Gen feature X.2. PARALLEL_MODE: true. ...")
+  Agent(generator, "Gen feature X.3. PARALLEL_MODE: true. ...")
+```
+
+Tất cả Agent() calls trong cùng 1 message → chạy song song.
+
+### Bước P4 — COLLECT + WRITE YAML
+
+Nhận GEN_RESULT từ mỗi generator. Với mỗi result:
+- Đọc `yaml_updates.screens_done` → Edit YAML: cập nhật screen status → done, ghi file_path
+- Nếu tất cả screens done → cập nhật feature status → done
+- Nếu còn screens chưa gen → feature status → partial
+- Nếu error → log lỗi, giữ status hiện tại
+
+Pipeline ghi YAML tuần tự (1 feature/lần) → không conflict.
+
+### Bước P5 — REPORT + NEXT BATCH
+
+Báo cáo batch gen vừa xong.
+Nếu `all_features_ready_for_gen` còn features chưa xử lý:
+→ Hỏi user tiếp tục batch tiếp?
+→ Có: quay lại bước P3 với 3 features tiếp theo
+→ Không: kết thúc
+
+### Giới hạn parallel mode
+- Scan: tuần tự, tối đa **5 features/session**
+- Gen: tối đa **3 generators/batch**, tối đa **2 batches/session** (6 features gen)
+- Mỗi generator tối đa **5 screens/feature**
+
+### Báo cáo cuối session (parallel)
+
+```
+═══ PARALLEL PIPELINE SUMMARY ═══
+Module: X — {moduleName}
+
+Phase SCAN (tuần tự):
+  ✓ Scanned N features (tích lũy K shared components)
+
+Phase GEN (song song):
+  Batch 1:
+    ✓ Feature X.1 — Name1 → done (2 screens, 5 functions, TSC pass)
+    ✓ Feature X.2 — Name2 → done (1 screen, 3 functions, TSC pass)
+    ⚠ Feature X.3 — Name3 → partial (1/3 screens, tsc 2 warnings)
+  Batch 2:
+    ✓ Feature X.4 — Name4 → done (2 screens, 6 functions, TSC pass)
+
+Progress: M/N features done | Next: /pipeline --parallel --module X
+```
+
+---
+
+## Giới hạn 1 session (mode tuần tự)
+
+- Tối đa **3 feature cycles** mỗi session (scan+gen = 1 cycle)
 - Sau 3 cycles → báo cáo tổng, đề nghị chạy session mới cho batch tiếp
 - Lý do: tránh context cha tích lũy quá nặng (mỗi cycle ~3-5K summary)
 
@@ -145,9 +242,9 @@ Sau khi sửa xong, chạy: /pipeline --feature {featureId} --gen-only
 ```
 ═══ PIPELINE SUMMARY ═══
 Features processed: N
-  ✓ Feature 2.4 — Phản ánh kiến nghị → done (3 functions, PASS)
-  ✓ Feature 2.6 — Tin tức → partial (5/13 functions, batch 1 done)
-  ✗ Feature 2.7 — Xúc tiến đầu tư → FAIL (2 TS errors)
+  ✓ Feature 2.4 — Phản ánh kiến nghị → done (2 screens, 3 functions, TSC pass)
+  ✓ Feature 2.6 — Tin tức → partial (1/3 screens done)
+  ⚠ Feature 2.7 — Xúc tiến đầu tư → done (2 tsc warnings, user review)
 
 Next: Chạy /pipeline để tiếp tục từ feature tiếp theo.
 ```

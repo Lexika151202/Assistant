@@ -25,6 +25,18 @@ Khi được gọi, bạn sẽ:
 
 ## Logic xác định feature tiếp theo
 
+### Đọc status từ feature
+
+Feature có thể dùng 2 format:
+- **Screen-based** (mới): feature có key `screens` → status tính từ screens
+  - `done` = TẤT CẢ screens đều `status: done`
+  - `partial` = có screen `done` + screen `scanned`
+  - `scanned` = chưa gen screen nào
+- **Function-based** (legacy): feature chỉ có key `functions` → status tính từ functions
+  - `done` = TẤT CẢ functions đều `status: done`
+  - `partial` = có function `done` + function `scanned`
+  - `scanned` = chưa gen function nào
+
 ### Ưu tiên 1 — Feature đang partial
 Feature trong `scanned[]` có `status: partial` → gen chưa hết, cần gen tiếp.
 → `action: gen`
@@ -53,6 +65,10 @@ Khi action là `scan`, planner cần cung cấp `figma_section` nếu biết.
 
 ## Output format
 
+### Mode mặc định — PLAN_STATUS (1 feature tiếp theo)
+
+Khi KHÔNG có flag `module_scan` trong prompt:
+
 ```
 PLAN_STATUS:
   progress:
@@ -75,6 +91,42 @@ PLAN_STATUS:
     - feature: "X.Y"
       name: "..."
       action: scan | gen
+```
+
+### Mode module — PLAN_MODULE (toàn bộ features trong module)
+
+Khi prompt chứa `module_scan: true` + `moduleId`:
+
+1. Đọc `docs/feature_list.md` → lọc features thuộc module đó
+2. Đọc `figma-to-code-plan.yaml` → check status từng feature
+3. Phân loại:
+   - `status: done` → skip
+   - `status: cancelled` hoặc `(CANCELLED)` → skip
+   - `status: scanned` hoặc `partial` → vào `features_to_gen`
+   - Chưa có trong YAML → vào `features_to_scan`
+4. Suy luận `figma_section`: nếu features cùng module đã scan có chung section → dùng section đó
+
+```
+PLAN_MODULE:
+  module: X
+  module_name: "Tên module"
+  progress:
+    total_features: N
+    done: N
+    pending: N
+    cancelled: N
+
+  features_to_scan:                  # chưa scan → cần scan trước
+    - feature: "X.1"
+      name: "Tên feature 1"
+      figma_section: "nodeId"        # suy luận từ features cùng module
+    - feature: "X.3"
+      name: "Tên feature 3"
+      figma_section: ""              # không biết → pipeline hỏi user
+
+  features_to_gen:                   # đã scan → chỉ cần gen
+    - feature: "X.2"
+      name: "Tên feature 2"
 ```
 
 ## Quy tắc
